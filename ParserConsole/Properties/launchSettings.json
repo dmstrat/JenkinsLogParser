@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ParserConsole": {
+      "commandName": "Project",
+      "commandLineArgs": "\"C:\\Parser\\logFile.txt\" \"C:\\Parser\\output.txt\""
+    }
+  }
+}
