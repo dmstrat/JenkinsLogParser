@@ -14,11 +14,28 @@ namespace JenkinsLogParser.Tokens
 
     public TimestampLine()
     {
-      //RegularExpression = new Regex(@"/^\s*^(\${3})\s*/i");
-      //RegularExpression = new Regex(@"/^\s*(.+)\s*$/i"); 
       Options = RegexOptions.IgnoreCase | RegexOptions.CultureInvariant;
       RegularExpression = new Regex(@"^\s*(\${3}.*)", Options);
       ReplaceRegularExpression = new Regex(@"^\s*|\s*$", Options);
+    }
+
+    public IToken GetClone()
+    {
+      return (IToken)this.MemberwiseClone();
+    }
+
+    public bool IsMatchForThisToken(string logLine)
+    {
+      var tempLogLine = logLine;
+      tempLogLine= ReplaceRegularExpression.Replace(tempLogLine, String.Empty);
+      var result = RegularExpression.Match(tempLogLine);
+      if (result.Success)
+      {
+        Line = result.Value;
+        GenerateTimestampFromLine();
+      }
+      return result.Success;
+
     }
 
     private void GenerateTimestampFromLine()
