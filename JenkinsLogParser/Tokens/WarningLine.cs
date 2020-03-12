@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Text.RegularExpressions;
-using JenkinsLogParser.Helpers;
 
 namespace JenkinsLogParser.Tokens
 {
-  public class TimestampLine : IToken, IHasTimespan
+  public class WarningLine : IToken //, IHasTimespan
   {
     public Regex RegularExpression { get; set; }
     public Regex ReplaceRegularExpression { get; set; }
@@ -12,10 +11,10 @@ namespace JenkinsLogParser.Tokens
     public RegexOptions Options { get; set; }
     public TimeSpan Timespan { get; set; }
 
-    public TimestampLine()
+    public WarningLine()
     {
       Options = RegexOptions.IgnoreCase | RegexOptions.CultureInvariant;
-      RegularExpression = new Regex(@"^\s*(\${3}.*)", Options);
+      RegularExpression = new Regex(@"(?<=\:\s{1}warning\s)(.*?)(?=\:)", Options);
       ReplaceRegularExpression = new Regex(@"^\s*|\s*$", Options);
     }
 
@@ -26,7 +25,7 @@ namespace JenkinsLogParser.Tokens
 
     public bool PrintIndividualLine()
     {
-      return true;
+      return false;
     }
 
     public bool IsMatchForThisToken(string logLine)
@@ -37,14 +36,9 @@ namespace JenkinsLogParser.Tokens
       if (result.Success)
       {
         Line = result.Value;
-        Timespan = TimeHelper.GenerateTimestampFromLine(Line);
+        //GenerateTimestampFromLine();
       }
       return result.Success;
-    }
-
-    public TimeSpan GetTimespan()
-    {
-      return Timespan;
     }
 
     public string GetLine()

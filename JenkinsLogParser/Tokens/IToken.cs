@@ -4,6 +4,7 @@
   {
     IToken GetClone();
     bool IsMatchForThisToken(string logLine);
+    bool PrintIndividualLine();
     string GetLine();
   }
 }
