@@ -4,7 +4,7 @@ using JenkinsLogParser.Helpers;
 
 namespace JenkinsLogParser.Tokens
 {
-  public class TimestampLine : Token<TimestampLine>, IToken, IHasTimespan
+  public class TimestampLine : IToken, IHasTimespan
   {
     public Regex RegularExpression { get; set; }
     public Regex ReplaceRegularExpression { get; set; }
@@ -21,7 +21,7 @@ namespace JenkinsLogParser.Tokens
 
     public IToken GetClone()
     {
-      return (IToken)this.MemberwiseClone();
+      return (IToken)MemberwiseClone();
     }
 
     public bool IsMatchForThisToken(string logLine)
@@ -35,7 +35,6 @@ namespace JenkinsLogParser.Tokens
         GenerateTimestampFromLine();
       }
       return result.Success;
-
     }
 
     private void GenerateTimestampFromLine()
@@ -65,21 +64,8 @@ namespace JenkinsLogParser.Tokens
       }
       else
       {
-        Timespan = new TimeSpan(0,0,0,0);
+        Timespan = TimeSpan.Zero;
       }
-    }
-
-    public bool ProcessLineImpl(string logLine)
-    {
-      Line = logLine;
-      var replacedTestLine = ReplaceRegularExpression.Replace(Line, String.Empty);
-      var result = RegularExpression.Match(replacedTestLine);
-      if (result.Success)
-      {
-        Line = result.Value;
-        GenerateTimestampFromLine();
-      }
-      return result.Success;
     }
 
     public TimeSpan GetTimespan()
