@@ -9,7 +9,6 @@ namespace JenkinsLogParser.Tokens
     public Regex ReplaceRegularExpression { get; set; }
     public string Line { get; set; }
     public RegexOptions Options { get; set; }
-    public TimeSpan Timespan { get; set; }
 
     public ProjectBuildEndline()
     {

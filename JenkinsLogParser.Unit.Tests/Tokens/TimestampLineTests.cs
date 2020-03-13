@@ -1,7 +1,6 @@
-using System;
-using System.Text.RegularExpressions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using JenkinsLogParser.Tokens;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace JenkinsLogParser.Unit.Tests.Tokens
 {
