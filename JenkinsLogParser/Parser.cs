@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net.Sockets;
 
 namespace JenkinsLogParser
 {
@@ -89,7 +88,7 @@ namespace JenkinsLogParser
             currentLineOutput += " => " + duration;
           }
 
-          previousTimespanToken = i;// _Output.Count;
+          previousTimespanToken = i;
         }
 
 
