@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Sockets;
 
 namespace JenkinsLogParser
 {
@@ -64,6 +65,7 @@ namespace JenkinsLogParser
 
     private void ProcessTokenList()
     {
+      var indent = 0;
       var previousTimespanToken = -1;
       TimeSpan duration = TimeSpan.Zero;
       for (int i = 0; i < _TokenList.Count; i++)
@@ -90,9 +92,21 @@ namespace JenkinsLogParser
           previousTimespanToken = i;// _Output.Count;
         }
 
+
+        if (_TokenList[i] is ProjectBuildEndline)
+        {
+          indent--;
+        }
+
         if (_TokenList[i].PrintIndividualLine())
         {
-          _Output.Add(currentLineOutput);
+          var spaces = new string(' ',2*indent);
+          _Output.Add(spaces + currentLineOutput);
+        }
+
+        if (_TokenList[i] is ProjectBuildStartLine)
+        {
+          indent++;
         }
 
       }
