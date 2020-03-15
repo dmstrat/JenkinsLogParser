@@ -22,7 +22,7 @@ namespace ParserConsole
         _LogFileInfo = new FileInfo(args[0]);
         if (!_LogFileInfo.Exists)
         {
-          throw new Exception("First Argument NOT an existing file [" + args[0] + "]");
+          throw new Exception("First Argument (Source File) NOT an existing file [" + args[0] + "]");
         }
         _OutputFileInfo = new FileInfo(args[1]);
       }

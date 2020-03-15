@@ -6,5 +6,6 @@
     bool IsMatchForThisToken(string logLine);
     bool PrintIndividualLine();
     string GetLine();
+    string GetMatch();
   }
 }

@@ -3,14 +3,14 @@ using System.Text.RegularExpressions;
 
 namespace JenkinsLogParser.Tokens
 {
-  public class ProjectBuildEndline : IToken 
+  public class ProjectBuildEndLine : IToken 
   {
     public Regex RegularExpression { get; set; }
     public Regex ReplaceRegularExpression { get; set; }
     public string Line { get; set; }
     public RegexOptions Options { get; set; }
 
-    public ProjectBuildEndline()
+    public ProjectBuildEndLine()
     {
       Options = RegexOptions.IgnoreCase | RegexOptions.CultureInvariant;
       var halfSecondTimeout = new TimeSpan(0, 0, 0, 0, 500);
@@ -43,6 +43,11 @@ namespace JenkinsLogParser.Tokens
     public string GetLine()
     {
       return "Project:" + Line + " END ";
+    }
+
+    public string GetMatch()
+    {
+      return Line;
     }
   }
 }

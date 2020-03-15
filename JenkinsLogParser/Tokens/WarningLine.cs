@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace JenkinsLogParser.Tokens
 {
-  public class WarningLine : IToken //, IHasTimespan
+  public class WarningLine : IToken 
   {
     public Regex RegularExpression { get; set; }
     public Regex ReplaceRegularExpression { get; set; }
@@ -35,12 +35,16 @@ namespace JenkinsLogParser.Tokens
       if (result.Success)
       {
         Line = result.Value;
-        //GenerateTimestampFromLine();
       }
       return result.Success;
     }
 
     public string GetLine()
+    {
+      return Line;
+    }
+
+    public string GetMatch()
     {
       return Line;
     }

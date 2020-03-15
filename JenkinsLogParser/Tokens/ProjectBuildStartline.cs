@@ -51,5 +51,10 @@ namespace JenkinsLogParser.Tokens
     {
       return "Project:" + Line + " START ";
     }
+
+    public string GetMatch()
+    {
+      return Line;
+    }
   }
 }

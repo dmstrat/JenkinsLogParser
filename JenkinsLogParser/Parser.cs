@@ -1,7 +1,11 @@
-﻿using JenkinsLogParser.Tokens;
+﻿using JenkinsLogParser.Events;
+using JenkinsLogParser.Events.Projects;
+using JenkinsLogParser.Handlers;
+using JenkinsLogParser.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace JenkinsLogParser
 {
@@ -21,38 +25,28 @@ namespace JenkinsLogParser
       _Output = new List<string>();
       _WarningCount = new Dictionary<string, int>();
 
-      using (var streamReader = new StreamReader(_LogFileInfo.FullName))
+      using var streamReader = new StreamReader(_LogFileInfo.FullName);
+      string line = null;
+      while ((line = streamReader.ReadLine()) != null)
       {
-        string line = null;
-        while ((line = streamReader.ReadLine()) != null)
-        {
-          ProcessLogLine(line);
-        }
-        ProcessTokenList();
-        using (var streamWriter = new StreamWriter(_OutputFileInfo.FullName, false))
-        {
-          WriteOutputToStream(streamWriter);
-          WriteWarningsToStream(streamWriter);
-        }
+        ProcessLogLine(line);
       }
+      ProcessTokenList();
+      using var streamWriter = new StreamWriter(_OutputFileInfo.FullName, false);
+      WriteOutputToStream(streamWriter);
+      WriteWarningsToStream(streamWriter);
     }
 
     private void ProcessLogLine(string logLine)
     {
-      var matchCount = 0;
       foreach (var token in TokenRegistry.Tokens)
       {
         var match = token.IsMatchForThisToken(logLine);
         if (match)
         {
-          matchCount++;
           AddTokenToOutput(token);
+          break;
         }
-      }
-
-      if (matchCount > 1)
-      {
-        System.Diagnostics.Debugger.Break();
       }
     }
 
@@ -73,8 +67,11 @@ namespace JenkinsLogParser
         var currentLineOutput = currentToken.GetLine();
         if (currentToken is WarningLine)
         {
-          var tempToken = currentToken.GetClone();
-          AddToWarningCount(tempToken);
+          var newWarning = new WarningAdded()
+          { 
+            WarningName = currentToken.GetMatch()
+          };
+          TokenEvents.Raise(newWarning);
         }
 
         if (currentToken is IHasTimespan)
@@ -87,13 +84,16 @@ namespace JenkinsLogParser
             duration = currentTimespan - previousTimespan;
             currentLineOutput += " => " + duration;
           }
-
           previousTimespanToken = i;
         }
 
-
-        if (_TokenList[i] is ProjectBuildEndline)
+        if (_TokenList[i] is ProjectBuildEndLine)
         {
+          var newEvent = new ProjectEnded()
+          {
+            ProjectName = _TokenList[i].GetMatch()
+          };
+          TokenEvents.Raise(newEvent);
           indent--;
         }
 
@@ -105,37 +105,44 @@ namespace JenkinsLogParser
 
         if (_TokenList[i] is ProjectBuildStartLine)
         {
+          var newEvent = new ProjectStarted()
+          {
+            ProjectName = _TokenList[i].GetMatch()
+          };
+          TokenEvents.Raise(newEvent);
           indent++;
-        }
-
-      }
-    }
-
-    private void AddToWarningCount(IToken token)
-    {
-      var warningAsString = token.GetLine().Trim();
-      var warningHasValue = warningAsString.Length > 0;
-      if (warningHasValue)
-      {
-        var isInDictionaryAlready = _WarningCount.Keys.Contains(warningAsString);
-        if (isInDictionaryAlready)
-        {
-          _WarningCount[warningAsString]++;
-        }
-        else
-        {
-          _WarningCount.Add(warningAsString, 1);
         }
       }
     }
 
     private void WriteWarningsToStream(StreamWriter streamWriter)
     {
-      WriteLineToOutput(streamWriter, "Warnings for this BUILD");
-      foreach (KeyValuePair<string, int> kvp in _WarningCount)
+      WriteLineToOutput(streamWriter, "Warnings for this BUILD (via Events)");
+      var externalList = WarningHandler.ProjectWarningCount["EXTERNAL"];
+      var projectList = WarningHandler.ProjectWarningCount.Where(x => x.Key != "EXTERNAL");
+      var sortedProjectList = projectList.OrderBy(x => x.Key);
+      foreach (var projectWarningList in sortedProjectList)
       {
-        var lineToWrite = kvp.Key + ":=>" + (kvp.Value/2);
-        WriteLineToOutput(streamWriter, lineToWrite);
+        var worthPrinting = projectWarningList.Value.Count > 0;
+        if (worthPrinting)
+        {
+          var currentProject = projectWarningList.Key;
+          WriteLineToOutput(streamWriter, currentProject);
+          var warningList = projectWarningList.Value;
+          var sortedWarningList = from pair in warningList orderby pair.Key select pair;
+          foreach (var warningCount in sortedWarningList)
+          {
+            var outputLine = "  " + warningCount.Key + ":" + warningCount.Value;
+            WriteLineToOutput(streamWriter, outputLine);
+          }
+        }
+      }
+
+      WriteLineToOutput(streamWriter, "EXTERNAL TO PROJECTS");
+      foreach (var warningItem in externalList)
+      {
+        var outputLine = "  " + warningItem.Key + ":" + warningItem.Value;
+        WriteLineToOutput(streamWriter, outputLine);
       }
     }
 

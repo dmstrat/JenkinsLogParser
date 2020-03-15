@@ -10,7 +10,7 @@ namespace JenkinsLogParser.Unit.Tests.Tokens
     public void WhenProjectEndLineIsProvidedWeFindAMatchAndGetEsoSmApiAsResult()
     {
       var testLine = "Done Building Project \"C:\\JenkinsAgent\\workspace\\Retail-WFM-ESO\\BOS\\EsoSmApi\\EsoSmApi.csproj\" (default targets).";
-      var token = new ProjectBuildEndline();
+      var token = new ProjectBuildEndLine();
       var tokenMatchesLine = token.IsMatchForThisToken(testLine);
       Assert.IsNotNull(token);
       Assert.IsTrue(tokenMatchesLine, "Token didn't match line as expected:" + testLine);
