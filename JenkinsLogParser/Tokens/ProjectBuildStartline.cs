@@ -14,7 +14,7 @@ namespace JenkinsLogParser.Tokens
     {
       Options = RegexOptions.IgnoreCase | RegexOptions.CultureInvariant;
       var halfSecondTimeout = new TimeSpan(0, 0, 0, 0,500);
-      RegularExpression = new Regex(@"(?<=[\.sln|\.csproj])(.*?is building.).*[\\](.*?)(?=\.csproj\"")", Options, halfSecondTimeout);
+      RegularExpression = new Regex(@"(?<=[\.sln|\.csproj])(.*?is building.).*[\\](.*?)(?=\.(csproj|wixproj)\"")", Options, halfSecondTimeout);
       ReplaceRegularExpression = new Regex(@"^\s*|\s*$", Options);
     }
 

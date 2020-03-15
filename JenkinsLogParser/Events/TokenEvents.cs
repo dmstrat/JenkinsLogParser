@@ -20,7 +20,6 @@ namespace JenkinsLogParser.Events
           Actions = actions;
           RegisterActions();
         }
-
         return actions;
       }
       set => _Actions = value;
@@ -35,6 +34,7 @@ namespace JenkinsLogParser.Events
     {
       var projectHandler = new ProjectHandler();
       Register<ProjectStarted>(projectHandler.Handle);
+      Register<ProjectEnded>(projectHandler.Handle);
       var warningHandler = new WarningHandler();
       Register<ProjectStarted>(warningHandler.Handle);
       Register<WarningAdded>(warningHandler.Handle);
