@@ -8,14 +8,15 @@ namespace JenkinsLogParser.Handlers
                                 IHandles<ProjectEnded>
   {
     public const string EXTERNAL = "EXTERNAL";
-    public static Dictionary<string, Dictionary<string, int>> ProjectWarningCount;
+    //public static Dictionary<string, Dictionary<string, int>> ProjectWarningCount;
+    internal static WarningDictionary ProjectWarningCount;
     public static string CurrentProject => _ProjectStack.Peek();
     private static Stack<string> _ProjectStack;
 
     public WarningHandler()
     {
       _ProjectStack = new Stack<string>();
-      ProjectWarningCount = new Dictionary<string, Dictionary<string, int>>();
+      ProjectWarningCount = new WarningDictionary();// new Dictionary<string, Dictionary<string, int>>() as IDictionary<string, IDictionary<string, int>>;
       AddOutsideProjectWarningsGroup();
     }
 
@@ -47,26 +48,18 @@ namespace JenkinsLogParser.Handlers
         return;
       }
       VerifyCurrentProjectExists(CurrentProject);
-      var warningExistsInProject = ProjectWarningCount[CurrentProject].ContainsKey(warningName);
-      if (warningExistsInProject)
-      {
-        ProjectWarningCount[CurrentProject][warningName]++;
-      }
-      else
-      {
-        AddWarningToProject(warningName);
-      }
+      ProjectWarningCount.AddWarning(CurrentProject,warningName);
     }
 
     private void AddWarningToProject(string warningName)
     {
-      ProjectWarningCount[CurrentProject].Add(warningName, 1);
+      //ProjectWarningCount[CurrentProject].Add(warningName, 1);
+      ProjectWarningCount.AddWarning(CurrentProject,warningName);
     }
 
     private void AddOutsideProjectWarningsGroup()
     {
-      var newEntry = new Dictionary<string, int>();
-      ProjectWarningCount.Add(EXTERNAL, newEntry);
+      ProjectWarningCount.AddProject(EXTERNAL);
       AddProjectToStack(EXTERNAL);
     }
 

@@ -19,7 +19,7 @@ namespace JenkinsLogParser.Helpers
           var hours = Convert.ToInt32(split[0]);
           var minutes = Convert.ToInt32(split[1]);
           if (split2.Length > 1)
-          {
+          {   
             var seconds = Convert.ToInt32(split2[0]);
             var milliseconds = TimeHelper.ConvertToMilliseconds(split2[1]);
             returnValue = new TimeSpan(0, hours, minutes, seconds, milliseconds);

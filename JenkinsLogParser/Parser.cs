@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using JenkinsLogParser.Helpers;
 
 namespace JenkinsLogParser
 {
@@ -33,8 +34,8 @@ namespace JenkinsLogParser
       }
       ProcessTokenList();
       using var streamWriter = new StreamWriter(_OutputFileInfo.FullName, false);
-      WriteOutputToStream(streamWriter);
-      WriteWarningsToStream(streamWriter);
+      WriteToStreamHelper.WriteOutputToStream(streamWriter, _Output);
+      WriteToStreamHelper.WriteWarningsToStream(streamWriter, WarningHandler.ProjectWarningCount);
     }
 
     private void ProcessLogLine(string logLine)
@@ -115,48 +116,7 @@ namespace JenkinsLogParser
       }
     }
 
-    private void WriteWarningsToStream(StreamWriter streamWriter)
-    {
-      WriteLineToOutput(streamWriter, "Warnings for this BUILD (via Events)");
-      var externalList = WarningHandler.ProjectWarningCount["EXTERNAL"];
-      var projectList = WarningHandler.ProjectWarningCount.Where(x => x.Key != "EXTERNAL");
-      var sortedProjectList = projectList.OrderBy(x => x.Key);
-      foreach (var projectWarningList in sortedProjectList)
-      {
-        var worthPrinting = projectWarningList.Value.Count > 0;
-        if (worthPrinting)
-        {
-          var currentProject = projectWarningList.Key;
-          WriteLineToOutput(streamWriter, currentProject);
-          var warningList = projectWarningList.Value;
-          var sortedWarningList = from pair in warningList orderby pair.Key select pair;
-          foreach (var warningCount in sortedWarningList)
-          {
-            var outputLine = "  " + warningCount.Key + ":" + warningCount.Value;
-            WriteLineToOutput(streamWriter, outputLine);
-          }
-        }
-      }
 
-      WriteLineToOutput(streamWriter, "EXTERNAL TO PROJECTS");
-      foreach (var warningItem in externalList)
-      {
-        var outputLine = "  " + warningItem.Key + ":" + warningItem.Value;
-        WriteLineToOutput(streamWriter, outputLine);
-      }
-    }
 
-    private void WriteOutputToStream(StreamWriter streamWriter)
-    {
-      foreach (string line in _Output)
-      {
-        WriteLineToOutput(streamWriter, line);
-      }
-    }
-
-    private static void WriteLineToOutput(StreamWriter streamWriter, string lineToRecord)
-    {
-      streamWriter.WriteLine(lineToRecord);
-    }
   }
 }
