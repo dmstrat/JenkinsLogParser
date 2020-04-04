@@ -1,12 +1,9 @@
 ﻿using JenkinsLogParser.Events;
-using JenkinsLogParser.Events.Projects;
-using JenkinsLogParser.Handlers;
 using JenkinsLogParser.Helpers;
 using JenkinsLogParser.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using JenkinsLogParser.Reports;
 
 namespace JenkinsLogParser
 {
@@ -14,19 +11,14 @@ namespace JenkinsLogParser
   {
     private FileInfo _LogFileInfo;
     private FileInfo _OutputFileInfo;
-    private IList<IToken> _TokenList = new List<IToken>();
-    private IList<string> _Output = new List<string>();
-    private IDictionary<Type, object> _Reports = new Dictionary<Type, object>();
+    protected static IDictionary<Type, object> Reports = new Dictionary<Type, object>();
+    protected static IList<Delegate> Delegates = new List<Delegate>();
 
     public void Parse(FileInfo logFileInfo, FileInfo outputFileInfo)
     {
+      Initialize();
       _LogFileInfo = logFileInfo;
       _OutputFileInfo = outputFileInfo;
-      _TokenList = new List<IToken>();
-      _Output = new List<string>();
-      //_Reports = BuildReportList();
-
-      //TODO: move the "wire up" portion of the code in Program.cs to here?
 
       using var streamReader = new StreamReader(_LogFileInfo.FullName);
       string line = null;
@@ -36,12 +28,14 @@ namespace JenkinsLogParser
         ProcessLogLine(lineNumber, line);
         lineNumber++;
       }
-      //ProcessTokenList();
-      //using var streamWriter = new StreamWriter(_OutputFileInfo.FullName, false);
-      //ProcessReports(streamWriter);
-      //WriteToStreamHelper.WriteOutputToStream(streamWriter, _Output);
-      //WriteToStreamHelper.WriteWarningsToStream(streamWriter, WarningHandler.ProjectWarningCount);
-      //TODO: add report handling here for output.
+      ReportHelper.ProcessReports(Reports, _OutputFileInfo);
+    }
+
+    private void Initialize()
+    {
+      Reports = ReportHelper.BuildReportDictionary();
+      Delegates = DelegateHelper.BuildDelegateDictionary(Reports);
+      TokenEvents.Actions = Delegates;
     }
 
     private void ProcessLogLine(long lineNumber, string logLine)
@@ -51,18 +45,13 @@ namespace JenkinsLogParser
         var match = token.ProcessLine(lineNumber, logLine);
         if (match)
         {
-          AddTokenToOutput(token);
           break;
         }
       }
     }
 
-    private void AddTokenToOutput(IToken token)
-    {
-      var tokenClone = token.GetClone();
-      _TokenList.Add(tokenClone);
-    }
 
+    // KEEPING UNTIL CONVERTED IN WHOLE
     //private void ProcessTokenList()
     //{
     //  var indent = 0;
