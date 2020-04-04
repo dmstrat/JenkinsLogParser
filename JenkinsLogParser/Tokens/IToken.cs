@@ -3,7 +3,7 @@
   public interface IToken
   {
     IToken GetClone();
-    bool IsMatchForThisToken(string logLine);
+    bool ProcessLine(long lineNumber, string logLine);
     bool PrintIndividualLine();
     string GetLine();
     string GetMatch();

@@ -12,7 +12,7 @@ namespace JenkinsLogParser.Unit.Tests.Tokens
     {
       var testLine = "Project \"C:\\JenkinsAgent\\workspace\\Retail-WFM-ESO\\Pay.sln\" (2) is building \"C:\\JenkinsAgent\\workspace\\Retail-WFM-ESO\\Engines\\Pay\\PayEngine\\PayEngine.csproj\" (3) on node 1 (default targets).";
       var token = new ProjectBuildStartLine();
-      var tokenMatchesLine = token.IsMatchForThisToken(testLine);
+      var tokenMatchesLine = token.ProcessLine(0, testLine);
       Assert.IsNotNull(token);
       Assert.IsTrue(tokenMatchesLine, "Token didn't match line as expected:" + testLine);
       var expectedLine = "Project:PayEngine START ";
@@ -28,7 +28,7 @@ namespace JenkinsLogParser.Unit.Tests.Tokens
     {
       var testLine = "Project \"C:\\JenkinsAgent\\workspace\\Retail-WFM-ESO\\Common\\DomainModel\\DomainModel.csproj\" (4) is building \"C:\\JenkinsAgent\\workspace\\Retail-WFM-ESO\\Common\\SharedBinaries\\Source\\RPCore\\RPCore.csproj\" (5:3) on node 1 (default targets).";
       var token = new ProjectBuildStartLine();
-      var tokenMatchesLine = token.IsMatchForThisToken(testLine);
+      var tokenMatchesLine = token.ProcessLine(0, testLine);
       Assert.IsNotNull(token);
       Assert.IsTrue(tokenMatchesLine, "Token didn't match line as expected:" + testLine);
       var expectedLine = "Project:RPCore START ";
@@ -44,7 +44,7 @@ namespace JenkinsLogParser.Unit.Tests.Tokens
     {
       var testLine = "Project \"C:\\JenkinsAgent\\workspace\\Retail-WFM-ESO\\RetailInstaller.sln\" (173) is building \"C:\\JenkinsAgent\\workspace\\Retail-WFM-ESO\\Engines\\Deploy\\nApeExtensionsLibrary\\nApeExtensionsLibrary.wixproj\" (176) on node 1 (default targets).";
       var token = new ProjectBuildStartLine();
-      var tokenMatchesLine = token.IsMatchForThisToken(testLine);
+      var tokenMatchesLine = token.ProcessLine(0, testLine);
       Assert.IsNotNull(token);
       Assert.IsTrue(tokenMatchesLine, "Token didn't match line as expected:" + testLine);
       var expectedLine = "Project:nApeExtensionsLibrary START ";

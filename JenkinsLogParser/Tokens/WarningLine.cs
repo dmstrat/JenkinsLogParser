@@ -27,7 +27,7 @@ namespace JenkinsLogParser.Tokens
       return false;
     }
 
-    public bool IsMatchForThisToken(string logLine)
+    public bool ProcessLine(long lineNumber, string logLine)
     {
       var tempLogLine = logLine;
       tempLogLine= ReplaceRegularExpression.Replace(tempLogLine, String.Empty);
@@ -35,6 +35,7 @@ namespace JenkinsLogParser.Tokens
       if (result.Success)
       {
         Line = result.Value;
+        //TODO: raise WarningAdded event
       }
       return result.Success;
     }

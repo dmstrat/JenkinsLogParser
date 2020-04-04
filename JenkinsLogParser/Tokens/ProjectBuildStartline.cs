@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using JenkinsLogParser.Events;
+using JenkinsLogParser.Events.Projects;
 
 namespace JenkinsLogParser.Tokens
 {
@@ -28,7 +30,7 @@ namespace JenkinsLogParser.Tokens
       return true;
     }
 
-    public bool IsMatchForThisToken(string logLine)
+    public bool ProcessLine(long lineNumber, string logLine)
     {
       var tempLogLine = logLine;
       tempLogLine= ReplaceRegularExpression.Replace(tempLogLine, String.Empty);
@@ -38,6 +40,7 @@ namespace JenkinsLogParser.Tokens
         if (result.Success)
         {
           Line = result.Groups[2].Value;
+          RaiseProjectStartedEvent(lineNumber, Line);
         }
         return result.Success;
       }
@@ -45,6 +48,23 @@ namespace JenkinsLogParser.Tokens
       {
         return false;
       }
+    }
+
+    private void RaiseProjectStartedEvent(long lineNumber, string line)
+    {
+      var args = BuildProjectStartedEventArgs(lineNumber, line);
+      var projectStartedEvent = new ProjectStarted(args);
+      TokenEvents.Raise(projectStartedEvent);
+    }
+
+    private ProjectStartedEventArgs BuildProjectStartedEventArgs(long lineNumber, string line)
+    {
+      var projectStartedEventArgs = new ProjectStartedEventArgs()
+      {
+        LineNumber = lineNumber,
+        ProjectName = line
+      };
+      return projectStartedEventArgs;
     }
 
     public string GetLine()

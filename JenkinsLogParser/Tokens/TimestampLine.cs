@@ -29,7 +29,7 @@ namespace JenkinsLogParser.Tokens
       return true;
     }
 
-    public bool IsMatchForThisToken(string logLine)
+    public bool ProcessLine(long lineNumber, string logLine)
     {
       var tempLogLine = logLine;
       tempLogLine= ReplaceRegularExpression.Replace(tempLogLine, String.Empty);
@@ -38,6 +38,7 @@ namespace JenkinsLogParser.Tokens
       {
         Line = result.Value;
         Timespan = TimeHelper.GenerateTimestampFromLine(Line);
+        //TODO: raise event
       }
       return result.Success;
     }

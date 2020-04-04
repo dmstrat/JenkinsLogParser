@@ -8,7 +8,6 @@ namespace JenkinsLogParser.Handlers
                                 IHandles<ProjectEnded>
   {
     public const string EXTERNAL = "EXTERNAL";
-    //public static Dictionary<string, Dictionary<string, int>> ProjectWarningCount;
     internal static WarningDictionary ProjectWarningCount;
     public static string CurrentProject => _ProjectStack.Peek();
     private static Stack<string> _ProjectStack;
@@ -16,7 +15,7 @@ namespace JenkinsLogParser.Handlers
     public WarningHandler()
     {
       _ProjectStack = new Stack<string>();
-      ProjectWarningCount = new WarningDictionary();// new Dictionary<string, Dictionary<string, int>>() as IDictionary<string, IDictionary<string, int>>;
+      ProjectWarningCount = new WarningDictionary();
       AddOutsideProjectWarningsGroup();
     }
 
@@ -28,7 +27,7 @@ namespace JenkinsLogParser.Handlers
 
     public void Handle(ProjectEnded tokenEvent)
     {
-      PopFromStack();
+      //PopFromStack();
     }
 
     private void PopFromStack()
