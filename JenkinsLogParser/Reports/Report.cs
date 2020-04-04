@@ -11,11 +11,16 @@ namespace JenkinsLogParser.Reports
   public class Report : IEnumerable<string> 
   {
     private IList<string> _Rows = new List<string>();
+    public IList<string> Rows => _Rows;
     public virtual void AddRow(string lineToAdd)
     {
       _Rows.Add(lineToAdd);
     }
 
+    public virtual IList<string> GetReportRows()
+    {
+      return _Rows;
+    }
     public IEnumerator<string> GetEnumerator()
     {
       return _Rows.GetEnumerator();

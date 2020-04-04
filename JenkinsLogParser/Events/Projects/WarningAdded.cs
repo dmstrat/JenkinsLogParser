@@ -1,29 +1,19 @@
-﻿using System;
-
-namespace JenkinsLogParser.Events.Projects
+﻿namespace JenkinsLogParser.Events.Projects
 {
-  public class WarningAdded : ITokenEvent
+  public class WarningAdded : EventBase
   {
-    public long LineNumber { get; set; }
     public string ProjectName { get; set; }
     public string WarningName { get; set; }
 
-    public WarningAdded(WarningAddedEventArgs args)
+    public WarningAdded(WarningAddedEventArgs args): base(args)
     {
-      LineNumber = args.LineNumber;
       ProjectName = args.ProjectName;
       WarningName = args.WarningName;
     }
-
-    public string GetProject()
-    {
-      return ProjectName;
-    }
   }
 
-  public class WarningAddedEventArgs : EventArgs
+  public class WarningAddedEventArgs : EventArgsBase
   {
-    public long LineNumber { get; set; }
     public string WarningName { get; set; }
     public string ProjectName { get; set; }
   }

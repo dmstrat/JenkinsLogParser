@@ -1,32 +1,17 @@
-﻿using System;
-
-namespace JenkinsLogParser.Events.Projects
+﻿namespace JenkinsLogParser.Events.Projects
 {
-  public class ProjectStarted : ITokenEvent
+  public class ProjectStarted : EventBase
   {
-    public long LineNumber { get; set; }
     public string ProjectName { get; set; }
 
-    public ProjectStarted(ProjectStartedEventArgs args)
+    public ProjectStarted(ProjectStartedEventArgs args): base(args)
     {
-      LineNumber = args.LineNumber;
       ProjectName = args.ProjectName;
-    }
-
-    public ProjectStarted()
-    {
-
-    }
-
-    public string GetProject()
-    {
-      return ProjectName;
     }
   }
 
-  public class ProjectStartedEventArgs : EventArgs
+  public class ProjectStartedEventArgs : EventArgsBase
   {
-    public long LineNumber { get; set; }
     public string ProjectName { get; set; }
   }
 }

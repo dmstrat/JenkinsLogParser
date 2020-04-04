@@ -1,29 +1,14 @@
-﻿using System;
-using JenkinsLogParser.Handlers;
-
-namespace JenkinsLogParser.Events
+﻿namespace JenkinsLogParser.Events
 {
-  public class LineAdded : ITokenEvent
+  public class LineAdded : EventBase
   {
-    private long _LineNumber;
-    private string _Line; 
-
-    public LineAdded(LineAddedEventArgs args)
+    public LineAdded(LineAddedEventArgs args) : base(args)
     {
-      _LineNumber = args.LineNumber;
-      _Line = args.LogLine;
-    }
-
-    public string GetProject()
-    {
-      return String.Empty;
     }
   }
 
-  public class LineAddedEventArgs : EventArgs
+  public class LineAddedEventArgs : EventArgsBase
   {
-    public long LineNumber { get; set; }
-    public string LogLine { get; set; }
   }
 
 }

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using JenkinsLogParser.Events;
+using JenkinsLogParser.Events.Projects;
 
 namespace JenkinsLogParser.Tokens
 {
@@ -35,9 +37,28 @@ namespace JenkinsLogParser.Tokens
       if (result.Success)
       {
         Line = result.Value;
-        //TODO: raise WarningAdded event
+        RaiseWarningAddedEvent(lineNumber, Line, logLine);
       }
       return result.Success;
+    }
+
+    private void RaiseWarningAddedEvent(long lineNumber, string line, string fullText)
+    {
+      var args = BuildWarningAddedEventArgs(lineNumber, line, fullText);
+      var timestampAddedEvent = new WarningAdded(args);
+      TokenEvents.Raise(timestampAddedEvent);
+    }
+
+    private WarningAddedEventArgs BuildWarningAddedEventArgs(long lineNumber, string line, string fullText)
+    {
+      var args = new WarningAddedEventArgs()
+      {
+        LineNumber = lineNumber,
+        FullText = fullText,
+        RegExResult = line,
+        WarningName = line
+      };
+      return args;
     }
 
     public string GetLine()

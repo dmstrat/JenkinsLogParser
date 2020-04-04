@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace JenkinsLogParser.Reports
 {
@@ -9,6 +11,11 @@ namespace JenkinsLogParser.Reports
     public ProjectBuildHierarchyReport() : base()
     {
       _Indent = 0;
+    }
+
+    public override IList<string> GetReportRows()
+    {
+      return base.Rows;
     }
 
     public override string GenerateReportRow(ProjectBuildHierarchyReportArgs args)

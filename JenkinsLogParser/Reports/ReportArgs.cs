@@ -1,6 +1,6 @@
 ﻿namespace JenkinsLogParser.Reports
 {
-  public abstract class ReportArgs
+  public class ReportArgs
   {
     //public abstract string GenerateReportRow();
   }

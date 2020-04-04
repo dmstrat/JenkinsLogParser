@@ -38,23 +38,25 @@ namespace JenkinsLogParser.Tokens
       if (result.Success)
       {
         Line = result.Groups[1].Value;
-        RaiseProjectEndedEvent(lineNumber, Line);
+        RaiseProjectEndedEvent(lineNumber, Line, logLine);
       }
       return result.Success;
     }
 
-    private void RaiseProjectEndedEvent(long lineNumber, string line)
+    private void RaiseProjectEndedEvent(long lineNumber, string line, string fullText)
     {
-      var args = BuildProjectEndedEventArgs(lineNumber, line);
+      var args = BuildProjectEndedEventArgs(lineNumber, line, fullText);
       var projectEndedEvent = new ProjectEnded(args);
       TokenEvents.Raise(projectEndedEvent);
     }
 
-    private ProjectEndedEventArgs BuildProjectEndedEventArgs(long lineNumber, string line)
+    private ProjectEndedEventArgs BuildProjectEndedEventArgs(long lineNumber, string line, string fullText)
     {
       var args = new ProjectEndedEventArgs()
       {
         LineNumber = lineNumber,
+        FullText = fullText,
+        RegExResult = line,
         ProjectName = line
       };
       return args;

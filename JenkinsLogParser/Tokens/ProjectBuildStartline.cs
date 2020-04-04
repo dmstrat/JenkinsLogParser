@@ -40,7 +40,7 @@ namespace JenkinsLogParser.Tokens
         if (result.Success)
         {
           Line = result.Groups[2].Value;
-          RaiseProjectStartedEvent(lineNumber, Line);
+          RaiseProjectStartedEvent(lineNumber, Line, logLine);
         }
         return result.Success;
       }
@@ -50,18 +50,20 @@ namespace JenkinsLogParser.Tokens
       }
     }
 
-    private void RaiseProjectStartedEvent(long lineNumber, string line)
+    private void RaiseProjectStartedEvent(long lineNumber, string line, string fullText)
     {
-      var args = BuildProjectStartedEventArgs(lineNumber, line);
+      var args = BuildProjectStartedEventArgs(lineNumber, line, fullText);
       var projectStartedEvent = new ProjectStarted(args);
       TokenEvents.Raise(projectStartedEvent);
     }
 
-    private ProjectStartedEventArgs BuildProjectStartedEventArgs(long lineNumber, string line)
+    private ProjectStartedEventArgs BuildProjectStartedEventArgs(long lineNumber, string line, string fullText)
     {
       var projectStartedEventArgs = new ProjectStartedEventArgs()
       {
         LineNumber = lineNumber,
+        RegExResult = line, 
+        FullText = fullText,
         ProjectName = line
       };
       return projectStartedEventArgs;

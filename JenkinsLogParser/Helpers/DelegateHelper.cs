@@ -12,7 +12,9 @@ namespace JenkinsLogParser.Helpers
   {
     public static IList<Delegate> BuildDelegateDictionary(IDictionary<Type, object> reports)
     {
-      var projectBuildHierarchyReport = (ProjectBuildHierarchyReport)GetReport(reports, typeof(ProjectBuildHierarchyReport));// new ProjectBuildHierarchyReport();
+      var projectBuildHierarchyReport = (ProjectBuildHierarchyReport)GetReport(reports, typeof(ProjectBuildHierarchyReport));
+      var warningSummaryReport = (WarningSummaryReport)GetReport(reports, typeof(WarningSummaryReport));
+
       var newDelegates = new List<Delegate>();
 
       var lineHandler = new LineHandler();
@@ -23,7 +25,7 @@ namespace JenkinsLogParser.Helpers
       newDelegates.Add((Action<WarningAdded>)projectHandler.Handle);
       newDelegates.Add((Action<ProjectEnded>)projectHandler.Handle);
 
-      var warningHandler = new WarningHandler();
+      var warningHandler = new WarningHandler(ref warningSummaryReport);
       newDelegates.Add((Action<ProjectStarted>)warningHandler.Handle);
       newDelegates.Add((Action<WarningAdded>)warningHandler.Handle);
       newDelegates.Add((Action<ProjectEnded>)warningHandler.Handle);

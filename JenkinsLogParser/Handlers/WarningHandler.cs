@@ -1,5 +1,6 @@
 ﻿using JenkinsLogParser.Events.Projects;
 using System.Collections.Generic;
+using JenkinsLogParser.Reports;
 
 namespace JenkinsLogParser.Handlers
 {
@@ -7,27 +8,24 @@ namespace JenkinsLogParser.Handlers
                                 IHandles<WarningAdded>,
                                 IHandles<ProjectEnded>
   {
-    public const string EXTERNAL = "EXTERNAL";
-    internal static WarningDictionary ProjectWarningCount;
-    public static string CurrentProject => _ProjectStack.Peek();
     private static Stack<string> _ProjectStack;
+    //internal static WarningDictionary ProjectWarningCount;
+    internal WarningSummaryReport WarningSummaryReport;
 
-    public WarningHandler()
+    public WarningHandler(ref WarningSummaryReport warningSummary)
     {
+      WarningSummaryReport = warningSummary;
       _ProjectStack = new Stack<string>();
-      ProjectWarningCount = new WarningDictionary();
-      AddOutsideProjectWarningsGroup();
     }
 
     public void Handle(ProjectStarted tokenEvent)
     {
       AddProjectToStack(tokenEvent.ProjectName);
-      VerifyCurrentProjectExists(CurrentProject);
     }
 
     public void Handle(ProjectEnded tokenEvent)
     {
-      //PopFromStack();
+      PopFromStack();
     }
 
     private void PopFromStack()
@@ -37,29 +35,18 @@ namespace JenkinsLogParser.Handlers
 
     public void Handle(WarningAdded tokenEvent)
     {
-      VerifyCurrentWarningExistsInCurrentProject(tokenEvent.WarningName);
+      var report = WarningSummaryReport;
+      var reportArgs = GenerateReportArgs(tokenEvent);
+      report.GenerateReportRow(reportArgs);
     }
 
-    private void VerifyCurrentWarningExistsInCurrentProject(string warningName)
+    private WarningSummaryReportArgs GenerateReportArgs(WarningAdded warningAddedEvent)
     {
-      if (warningName.Trim().Length < 1)
+      var reportArgs = new WarningSummaryReportArgs
       {
-        return;
-      }
-      VerifyCurrentProjectExists(CurrentProject);
-      ProjectWarningCount.AddWarning(CurrentProject,warningName);
-    }
-
-    private void AddWarningToProject(string warningName)
-    {
-      //ProjectWarningCount[CurrentProject].Add(warningName, 1);
-      ProjectWarningCount.AddWarning(CurrentProject,warningName);
-    }
-
-    private void AddOutsideProjectWarningsGroup()
-    {
-      ProjectWarningCount.AddProject(EXTERNAL);
-      AddProjectToStack(EXTERNAL);
+        WarningName = warningAddedEvent.WarningName
+      };
+      return reportArgs;
     }
 
     private void AddProjectToStack(string projectName)
@@ -67,13 +54,5 @@ namespace JenkinsLogParser.Handlers
       _ProjectStack.Push(projectName);
     }
 
-    private void VerifyCurrentProjectExists(string projectName)
-    {
-      if (!ProjectWarningCount.ContainsKey(projectName))
-      {
-        var newEntry = new Dictionary<string, int>();
-        ProjectWarningCount.Add(projectName, newEntry);
-      }
-    }
   }
 }

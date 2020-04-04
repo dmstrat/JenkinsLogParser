@@ -12,14 +12,25 @@ namespace JenkinsLogParser
     private FileInfo _LogFileInfo;
     private FileInfo _OutputFileInfo;
     protected static IDictionary<Type, object> Reports = new Dictionary<Type, object>();
-    protected static IList<Delegate> Delegates = new List<Delegate>();
 
     public void Parse(FileInfo logFileInfo, FileInfo outputFileInfo)
     {
-      Initialize();
       _LogFileInfo = logFileInfo;
       _OutputFileInfo = outputFileInfo;
+      Initialize();
+      ProcessLog();
+      ProcessReports();
+    }
 
+    private void Initialize()
+    {
+      Reports = ReportHelper.BuildReportDictionary();
+      var delegates = DelegateHelper.BuildDelegateDictionary(Reports);
+      TokenEvents.Actions = delegates;
+    }
+
+    private void ProcessLog()
+    {
       using var streamReader = new StreamReader(_LogFileInfo.FullName);
       string line = null;
       long lineNumber = 1;
@@ -28,14 +39,6 @@ namespace JenkinsLogParser
         ProcessLogLine(lineNumber, line);
         lineNumber++;
       }
-      ReportHelper.ProcessReports(Reports, _OutputFileInfo);
-    }
-
-    private void Initialize()
-    {
-      Reports = ReportHelper.BuildReportDictionary();
-      Delegates = DelegateHelper.BuildDelegateDictionary(Reports);
-      TokenEvents.Actions = Delegates;
     }
 
     private void ProcessLogLine(long lineNumber, string logLine)
@@ -50,6 +53,10 @@ namespace JenkinsLogParser
       }
     }
 
+    private void ProcessReports()
+    {
+      ReportHelper.ProcessReports(Reports, _OutputFileInfo);
+    }
 
     // KEEPING UNTIL CONVERTED IN WHOLE
     //private void ProcessTokenList()
