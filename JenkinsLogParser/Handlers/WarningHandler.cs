@@ -9,12 +9,27 @@ namespace JenkinsLogParser.Handlers
                                 IHandles<ProjectEnded>
   {
     private static Stack<string> _ProjectStack;
-    //internal static WarningDictionary ProjectWarningCount;
     internal WarningSummaryReport WarningSummaryReport;
+    internal WarningByProjectSummaryReport WarningByProjectSummaryReport;
+    private const string EXTERNAL = "EXTERNAL";
 
-    public WarningHandler(ref WarningSummaryReport warningSummary)
+    internal string CurrentProject
+    {
+      get
+      {
+        var stackHasProject = _ProjectStack.Count > 0;
+        if (stackHasProject)
+        {
+          return _ProjectStack.Peek();
+        }
+        return EXTERNAL;
+      }
+    }
+
+    public WarningHandler(ref WarningSummaryReport warningSummary, ref WarningByProjectSummaryReport warningByProjectSummaryReport)
     {
       WarningSummaryReport = warningSummary;
+      WarningByProjectSummaryReport = warningByProjectSummaryReport;
       _ProjectStack = new Stack<string>();
     }
 
@@ -35,12 +50,35 @@ namespace JenkinsLogParser.Handlers
 
     public void Handle(WarningAdded tokenEvent)
     {
+      AddWarningToWarningSummaryReport(tokenEvent);
+      AddWarningToWarningByProjectSummaryReport(tokenEvent);
+    }
+
+    private void AddWarningToWarningSummaryReport(WarningAdded warningAddedEvent)
+    {
       var report = WarningSummaryReport;
-      var reportArgs = GenerateReportArgs(tokenEvent);
+      var reportArgs = GenerateWarningSummaryReportArgs(warningAddedEvent);
       report.GenerateReportRow(reportArgs);
     }
 
-    private WarningSummaryReportArgs GenerateReportArgs(WarningAdded warningAddedEvent)
+    private void AddWarningToWarningByProjectSummaryReport(WarningAdded warningAddedEvent)
+    {
+      var report = WarningByProjectSummaryReport;
+      var reportArgs = GenerateWarningByProjectSummaryReportArgs(warningAddedEvent);
+      report.GenerateReportRow(reportArgs);
+    }
+
+    private WarningByProjectSummaryReportArgs GenerateWarningByProjectSummaryReportArgs(WarningAdded warningAddedEvent)
+    {
+      var reportArgs = new WarningByProjectSummaryReportArgs
+      {
+        ProjectName = CurrentProject,
+        WarningName = warningAddedEvent.WarningName
+      };
+      return reportArgs;
+    }
+
+    private WarningSummaryReportArgs GenerateWarningSummaryReportArgs(WarningAdded warningAddedEvent)
     {
       var reportArgs = new WarningSummaryReportArgs
       {

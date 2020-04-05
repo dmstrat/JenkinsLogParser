@@ -14,6 +14,7 @@ namespace JenkinsLogParser.Helpers
     {
       var projectBuildHierarchyReport = (ProjectBuildHierarchyReport)GetReport(reports, typeof(ProjectBuildHierarchyReport));
       var warningSummaryReport = (WarningSummaryReport)GetReport(reports, typeof(WarningSummaryReport));
+      var warningByProjectSummaryReport = (WarningByProjectSummaryReport)GetReport(reports, typeof(WarningByProjectSummaryReport));
 
       var newDelegates = new List<Delegate>();
 
@@ -25,7 +26,7 @@ namespace JenkinsLogParser.Helpers
       newDelegates.Add((Action<WarningAdded>)projectHandler.Handle);
       newDelegates.Add((Action<ProjectEnded>)projectHandler.Handle);
 
-      var warningHandler = new WarningHandler(ref warningSummaryReport);
+      var warningHandler = new WarningHandler(ref warningSummaryReport, ref warningByProjectSummaryReport);
       newDelegates.Add((Action<ProjectStarted>)warningHandler.Handle);
       newDelegates.Add((Action<WarningAdded>)warningHandler.Handle);
       newDelegates.Add((Action<ProjectEnded>)warningHandler.Handle);

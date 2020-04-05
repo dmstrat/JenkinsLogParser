@@ -3,68 +3,78 @@ using System.Linq;
 
 namespace JenkinsLogParser.Reports
 {
-  public class WarningByProjectSummaryReport // : Report<WarningByProjectSummaryReportArgs>
-  {/*
+  public class WarningByProjectSummaryReport  : Report<WarningByProjectSummaryReportArgs>
+  {
     private IList<string> ReportRows;
-    private IList<ProjectWarningDataRow> ReportDataRows;
+    private Dictionary<string, Dictionary<string, int>> ReportDataRows;
     public WarningByProjectSummaryReport() : base()
     {
       ReportRows = new List<string>();
-      ReportDataRows = new Dictionary<string, int>();
+      ReportDataRows = new Dictionary<string, Dictionary<string, int>>();
     }
 
     public override IList<string> GetReportRows()
     {
+      ReportRows = new List<string>();
       BuildReportRows();
       return ReportRows;
     }
 
     public override string GenerateReportRow(WarningByProjectSummaryReportArgs args)
     {
-      VerifyWarningInSummary(args.WarningName);
-      IncrementWarningCountInSummary(args.WarningName);
+      EnsureProjectInDictionary(args.ProjectName);
+      EnsureWarningInProjectInDictionary(args.ProjectName, args.WarningName);
+      IncrementWarningCountInProject(args.ProjectName, args.WarningName);
       return string.Empty;
     }
 
-    private IList<string> BuildReportRows()
+    private void EnsureProjectInDictionary(string projectName)
     {
-      var sortedKeyList = SortReportDataRows();
-      foreach (var warningName in sortedKeyList)
+      var projectNotInDictionary = !ReportDataRows.ContainsKey(projectName);
+      if (projectNotInDictionary)
       {
-        var warningCount = ReportDataRows[warningName];
-        var reportRow = $"Warning: {warningName}:{warningCount}";
-        ReportRows.Add(reportRow);
-      }
-
-      return ReportRows;
-    }
-
-    private IList<string> SortReportDataRows()
-    {
-      var sortedKeyList = ReportDataRows.Keys.ToList();
-      sortedKeyList.Sort();
-      return sortedKeyList;
-    }
-
-    private void VerifyWarningInSummary(string warningName)
-    {
-      var warningIsNotPresent = !ReportDataRows.ContainsKey(warningName);
-      if (warningIsNotPresent)
-      {
-        ReportDataRows.Add(warningName, 0);
+        var newWarningDictionary = new Dictionary<string, int>();
+        ReportDataRows.Add(projectName, newWarningDictionary);
       }
     }
 
-    private void IncrementWarningCountInSummary(string warningName)
+    private void EnsureWarningInProjectInDictionary(string projectName, string warningName)
     {
-      ReportDataRows[warningName]++;
-    } */
+      var warningNotInProjectDictionary = !ReportDataRows[projectName].ContainsKey(warningName);
+      if (warningNotInProjectDictionary)
+      {
+        ReportDataRows[projectName].Add(warningName, 0);
+      }
+    }
 
+    private void IncrementWarningCountInProject(string projectName, string warningName)
+    {
+      ReportDataRows[projectName][warningName]++;
+    }
+
+    private void BuildReportRows()
+    {
+      var sortedProjectList = ReportDataRows.Keys.ToList();
+      sortedProjectList.Sort();
+      foreach (var projectName in sortedProjectList)
+      {
+        var projectHeaderRow = $"Project: {projectName}";
+        ReportRows.Add(projectHeaderRow);
+        var sortedWarningsList = ReportDataRows[projectName].Keys.ToList();
+        sortedWarningsList.Sort();
+        foreach (var warningName in sortedWarningsList)
+        {
+          var warningCount = ReportDataRows[projectName][warningName];
+          var reportRow = $"  Warning: {warningName}:{warningCount}";
+          ReportRows.Add(reportRow);
+        }
+      }
+    }
   }
-  /*
+
   public class WarningByProjectSummaryReportArgs : ReportArgs
   {
     public string ProjectName { get; set; }
     public string WarningName { get; set; }
-  }*/
+  }
 }

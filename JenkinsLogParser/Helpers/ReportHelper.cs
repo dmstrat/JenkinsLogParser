@@ -17,6 +17,9 @@ namespace JenkinsLogParser.Helpers
       var warningSummaryReport = new WarningSummaryReport();
       newDictionary.Add(typeof(WarningSummaryReport), warningSummaryReport);
 
+      var warningByProjectSummaryReport = new WarningByProjectSummaryReport();
+      newDictionary.Add(typeof(WarningByProjectSummaryReport), warningByProjectSummaryReport);
+
       return newDictionary;
     }
 
@@ -26,6 +29,7 @@ namespace JenkinsLogParser.Helpers
       {
         ProcessProjectBuildHierarchyReport(streamWriter, reports);
         ProcessWarningSummaryReport(streamWriter, reports);
+        ProcessWarningsByProjectReport(streamWriter, reports);
       }
     }
     
@@ -42,6 +46,14 @@ namespace JenkinsLogParser.Helpers
         (WarningSummaryReport)DelegateHelper.GetReport(reports, typeof(WarningSummaryReport));
       var warningSummaryReportRows = warningSummaryReport.GetReportRows();
       ProcessGenericReport(streamWriter, "Warning Summary", warningSummaryReportRows);
+    }
+
+    private static void ProcessWarningsByProjectReport(StreamWriter streamWriter, IDictionary<Type, object> reports)
+    {
+      var warningByProjectSummaryReport =
+        (WarningByProjectSummaryReport)DelegateHelper.GetReport(reports, typeof(WarningByProjectSummaryReport));
+      var warningByProjectSummaryReportRows = warningByProjectSummaryReport.GetReportRows();
+      ProcessGenericReport(streamWriter, "Warnings By Projects Summary", warningByProjectSummaryReportRows);
     }
 
     private static void ProcessGenericReport(StreamWriter streamWriter, string reportName, IList<string> rows)
