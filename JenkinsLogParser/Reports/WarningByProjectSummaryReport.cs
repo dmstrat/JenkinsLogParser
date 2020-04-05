@@ -6,19 +6,30 @@ namespace JenkinsLogParser.Reports
   public class WarningByProjectSummaryReport  : Report<WarningByProjectSummaryReportArgs>
   {
     private const string EXTERNAL = "EXTERNAL";
-    private IList<string> ReportRows;
-    private Dictionary<string, Dictionary<string, int>> ReportDataRows;
+    private IList<string> _ReportRows;
+    private Dictionary<string, Dictionary<string, int>> _ReportDataRows;
+    private int _CountPadding = 5;
+    private int _WarningPadding = 12;
     public WarningByProjectSummaryReport() : base()
     {
-      ReportRows = new List<string>();
-      ReportDataRows = new Dictionary<string, Dictionary<string, int>>();
+      _ReportRows = new List<string>();
+      _ReportDataRows = new Dictionary<string, Dictionary<string, int>>();
     }
 
     public override IList<string> GetReportRows()
     {
-      ReportRows = new List<string>();
+      _ReportRows = new List<string>();
+      BuildPaddingNumbers();
       BuildReportRows();
-      return ReportRows;
+      return _ReportRows;
+    }
+
+    private void BuildPaddingNumbers()
+    {
+      var maxWarningStringLength = _ReportDataRows.Max(row => row.Value.Keys.Max(ro=>ro.Length));
+      _WarningPadding = maxWarningStringLength;
+      var maxCountStringLength = _ReportDataRows.Max(row => row.Value.Values.Max(ro => ro.ToString().Length));
+      _CountPadding = maxCountStringLength;
     }
 
     public override string GenerateReportRow(WarningByProjectSummaryReportArgs args)
@@ -31,26 +42,26 @@ namespace JenkinsLogParser.Reports
 
     private void EnsureProjectInDictionary(string projectName)
     {
-      var projectNotInDictionary = !ReportDataRows.ContainsKey(projectName);
+      var projectNotInDictionary = !_ReportDataRows.ContainsKey(projectName);
       if (projectNotInDictionary)
       {
         var newWarningDictionary = new Dictionary<string, int>();
-        ReportDataRows.Add(projectName, newWarningDictionary);
+        _ReportDataRows.Add(projectName, newWarningDictionary);
       }
     }
 
     private void EnsureWarningInProjectInDictionary(string projectName, string warningName)
     {
-      var warningNotInProjectDictionary = !ReportDataRows[projectName].ContainsKey(warningName);
+      var warningNotInProjectDictionary = !_ReportDataRows[projectName].ContainsKey(warningName);
       if (warningNotInProjectDictionary)
       {
-        ReportDataRows[projectName].Add(warningName, 0);
+        _ReportDataRows[projectName].Add(warningName, 0);
       }
     }
 
     private void IncrementWarningCountInProject(string projectName, string warningName)
     {
-      ReportDataRows[projectName][warningName]++;
+      _ReportDataRows[projectName][warningName]++;
     }
 
     private void BuildReportsRowsUsingProjectList(IList<string> sortedProjectList)
@@ -58,14 +69,16 @@ namespace JenkinsLogParser.Reports
       foreach (var projectName in sortedProjectList)
       {
         var projectHeaderRow = $"Project: {projectName}";
-        ReportRows.Add(projectHeaderRow);
-        var sortedWarningsList = ReportDataRows[projectName].Keys.ToList();
+        _ReportRows.Add(projectHeaderRow);
+        var sortedWarningsList = _ReportDataRows[projectName].Keys.ToList();
         sortedWarningsList.Sort();
         foreach (var warningName in sortedWarningsList)
         {
-          var warningCount = ReportDataRows[projectName][warningName];
-          var reportRow = $"  Warning: {warningName}:{warningCount}";
-          ReportRows.Add(reportRow);
+          var warningCount = _ReportDataRows[projectName][warningName];
+          var warningCountRightAligned = warningCount.ToString().PadLeft(_CountPadding);
+          var warningNameLeftAligned = warningName.PadRight(_WarningPadding);
+          var reportRow = $"  Warning: {warningNameLeftAligned}:{warningCountRightAligned}";
+          _ReportRows.Add(reportRow);
         }
       }
     }
@@ -73,11 +86,11 @@ namespace JenkinsLogParser.Reports
     private void BuildReportRows()
     {
       //extract EXTERNAL project to print first 
-      var externalProjectList = ReportDataRows.Keys.Where(rpt => rpt.Equals(EXTERNAL)).ToList();
+      var externalProjectList = _ReportDataRows.Keys.Where(rpt => rpt.Equals(EXTERNAL)).ToList();
       BuildReportsRowsUsingProjectList(externalProjectList);
 
       //extract ALL BUT EXTERNAL project to print next
-      var sortedProjectList = ReportDataRows.Keys.Where(rpt=>!rpt.Equals(EXTERNAL)).ToList();
+      var sortedProjectList = _ReportDataRows.Keys.Where(rpt=>!rpt.Equals(EXTERNAL)).ToList();
       sortedProjectList.Sort();
       BuildReportsRowsUsingProjectList(sortedProjectList);
     }

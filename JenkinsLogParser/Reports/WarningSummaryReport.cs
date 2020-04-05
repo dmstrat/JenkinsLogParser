@@ -5,18 +5,30 @@ namespace JenkinsLogParser.Reports
 {
   public class WarningSummaryReport : Report<WarningSummaryReportArgs>
   {
-    private IList<string> ReportRows;
-    private IDictionary<string, int> ReportDataRows;
+    private IList<string> _ReportRows;
+    private IDictionary<string, int> _ReportDataRows;
+    private int _CountPadding;
+    private int _WarningPadding;
     public WarningSummaryReport() : base()
     {
-      ReportRows = new List<string>();
-      ReportDataRows = new Dictionary<string, int>();
+      _ReportRows = new List<string>();
+      _ReportDataRows = new Dictionary<string, int>();
     }
 
     public override IList<string> GetReportRows()
     {
+      BuildPaddingNumbers();
       BuildReportRows();
-      return ReportRows;
+      return _ReportRows;
+    }
+
+    private void BuildPaddingNumbers()
+    {
+      var maxWarningNameLength = _ReportDataRows.Max(row => row.Key.Length);
+      _WarningPadding = maxWarningNameLength;
+
+      var maxCountLength = _ReportDataRows.Max(row => row.Value.ToString().Length);
+      _CountPadding = maxCountLength;
     }
 
     public override string GenerateReportRow(WarningSummaryReportArgs args)
@@ -26,38 +38,37 @@ namespace JenkinsLogParser.Reports
       return string.Empty;
     }
 
-    private IList<string> BuildReportRows()
+    private void BuildReportRows()
     {
       var sortedKeyList = SortReportDataRows();
       foreach (var warningName in sortedKeyList)
       {
-        var warningCount = ReportDataRows[warningName];
-        var reportRow = $"Warning: {warningName}:{warningCount}";
-        ReportRows.Add(reportRow);
+        var warningNameLeftAligned = warningName.PadRight(_WarningPadding);
+        var warningCountRightAligned = _ReportDataRows[warningName].ToString().PadLeft(_CountPadding);
+        var reportRow = $"Warning: {warningNameLeftAligned}:{warningCountRightAligned }";
+        _ReportRows.Add(reportRow);
       }
-
-      return ReportRows;
     }
 
     private IList<string> SortReportDataRows()
     {
-      var sortedKeyList = ReportDataRows.Keys.ToList();
+      var sortedKeyList = _ReportDataRows.Keys.ToList();
       sortedKeyList.Sort();
       return sortedKeyList;
     }
 
     private void VerifyWarningInSummary(string warningName)
     {
-      var warningIsNotPresent = !ReportDataRows.ContainsKey(warningName);
+      var warningIsNotPresent = !_ReportDataRows.ContainsKey(warningName);
       if (warningIsNotPresent)
       {
-        ReportDataRows.Add(warningName, 0);
+        _ReportDataRows.Add(warningName, 0);
       }
     }
 
     private void IncrementWarningCountInSummary(string warningName)
     {
-      ReportDataRows[warningName]++;
+      _ReportDataRows[warningName]++;
     }
   }
 

@@ -19,12 +19,8 @@ namespace JenkinsLogParser.Helpers
 
       var newDelegates = new List<Delegate>();
 
-      var lineHandler = new LineHandler();
-      newDelegates.Add((Action<LineAdded>)lineHandler.Handle);
-
       var projectHandler = new ProjectHandler(ref projectBuildHierarchyReport);
       newDelegates.Add((Action<ProjectStarted>)projectHandler.Handle);
-      newDelegates.Add((Action<WarningAdded>)projectHandler.Handle);
       newDelegates.Add((Action<ProjectEnded>)projectHandler.Handle);
 
       var warningHandler = new WarningHandler(ref warningSummaryReport, ref warningByProjectSummaryReport);

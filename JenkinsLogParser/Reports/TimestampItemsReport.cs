@@ -72,8 +72,9 @@ namespace JenkinsLogParser.Reports
 
     private string BuildReportRow(in long currentRowLineNumber, string currentRowText, in TimeSpan currentTimeSpan, in TimeSpan previousTimeSpan, in TimeSpan nextTimeSpan)
     {
-      var durationUp = currentTimeSpan - previousTimeSpan;
-      var durationDown = nextTimeSpan - currentTimeSpan;
+      string durationFormat = @"hh\:mm\:ss\.ffff";
+      var durationUp = (currentTimeSpan - previousTimeSpan).ToString(durationFormat);
+      var durationDown = (nextTimeSpan - currentTimeSpan).ToString(durationFormat);
       var lineNumberRightAligned = currentRowLineNumber.ToString().PadLeft(_LineNumberWidth);
       var textLeftAligned = currentRowText.PadRight(_TextPaddingWidth);
       var newReportRowText = $"{lineNumberRightAligned}:{textLeftAligned} => (from last):{durationUp} | (to next):{durationDown}";
@@ -116,8 +117,6 @@ namespace JenkinsLogParser.Reports
       };
       return timespanDataRow;
     }
-
-
   }
 
   public class TimestampItemsReportArgs : ReportArgs

@@ -1,11 +1,9 @@
-﻿using System;
-using JenkinsLogParser.Events.Projects;
+﻿using JenkinsLogParser.Events.Projects;
 using JenkinsLogParser.Reports;
 
 namespace JenkinsLogParser.Handlers
 {
   public class ProjectHandler : IHandles<ProjectStarted>,
-                                IHandles<WarningAdded>,
                                 IHandles<ProjectEnded>
   {
     private ProjectBuildHierarchyReport _ProjectBuildHierarchyReport;
@@ -37,11 +35,6 @@ namespace JenkinsLogParser.Handlers
         Action = ProjectAction.End
       };
       report.GenerateReportRow(reportArgs);
-    }
-
-    public void Handle(WarningAdded tokenEvent)
-    {
-      
     }
   }
 }

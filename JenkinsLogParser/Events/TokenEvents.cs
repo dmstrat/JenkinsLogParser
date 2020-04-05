@@ -1,6 +1,4 @@
-﻿using JenkinsLogParser.Events.Projects;
-using JenkinsLogParser.Handlers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace JenkinsLogParser.Events
@@ -49,8 +47,6 @@ namespace JenkinsLogParser.Events
 
     private static void RegisterDefaultHandlers()
     {
-      //var lineHandler = new LineHandler();
-      //Register<LineAdded>(lineHandler.Handle);
       //var projectHandler = new ProjectHandler();
       //Register<ProjectStarted>(projectHandler.Handle);
       //Register<WarningAdded>(projectHandler.Handle);

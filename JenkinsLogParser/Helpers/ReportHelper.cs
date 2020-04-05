@@ -41,7 +41,8 @@ namespace JenkinsLogParser.Helpers
     {
       var projectBuildReport = (ProjectBuildHierarchyReport)DelegateHelper.GetReport(reports, typeof(ProjectBuildHierarchyReport));
       var projectBuildReportRows = projectBuildReport.GetReportRows();
-      ProcessGenericReport(streamWriter, "Project Build Hierarchy", projectBuildReportRows);
+      var rowFormat = "[LineNumber]:Project:[ProjectName]:[Action]";
+      ProcessGenericReport(streamWriter, "Project Build Hierarchy", rowFormat, projectBuildReportRows);
     }
 
     private static void ProcessWarningSummaryReport(StreamWriter streamWriter, IDictionary<Type, object> reports)
@@ -49,7 +50,8 @@ namespace JenkinsLogParser.Helpers
       var warningSummaryReport =
         (WarningSummaryReport)DelegateHelper.GetReport(reports, typeof(WarningSummaryReport));
       var warningSummaryReportRows = warningSummaryReport.GetReportRows();
-      ProcessGenericReport(streamWriter, "Warning Summary", warningSummaryReportRows);
+      var rowFormat = "Warning: [WarningName]:[Count]";
+      ProcessGenericReport(streamWriter, "Warning Summary", rowFormat, warningSummaryReportRows);
     }
 
     private static void ProcessWarningsByProjectReport(StreamWriter streamWriter, IDictionary<Type, object> reports)
@@ -57,19 +59,22 @@ namespace JenkinsLogParser.Helpers
       var warningByProjectSummaryReport =
         (WarningByProjectSummaryReport)DelegateHelper.GetReport(reports, typeof(WarningByProjectSummaryReport));
       var warningByProjectSummaryReportRows = warningByProjectSummaryReport.GetReportRows();
-      ProcessGenericReport(streamWriter, "Warnings By Projects Summary", warningByProjectSummaryReportRows);
+      var rowFormat = "Project: [ProjectName] \r\n  Warning:[WarningName]:[Count]";
+      ProcessGenericReport(streamWriter, "Warnings By Projects Summary", rowFormat, warningByProjectSummaryReportRows);
     }
 
     private static void ProcessTimestampItemsReport(StreamWriter streamWriter, IDictionary<Type, object> reports)
     {
       var timestampItemsReport = (TimestampItemsReport)DelegateHelper.GetReport(reports, typeof(TimestampItemsReport));
       var timestampItemsReportRows = timestampItemsReport.GetReportRows();
-      ProcessGenericReport(streamWriter, "Timestamp Items", timestampItemsReportRows);
+      var rowFormat = "[LineNumber]:[Line Text]:(from last)[Duration from previous timestamp]: | (to next) [Duration to next timestamp]";
+      ProcessGenericReport(streamWriter, "Timestamp Items", rowFormat, timestampItemsReportRows);
     }
 
-    private static void ProcessGenericReport(StreamWriter streamWriter, string reportName, IList<string> rows)
+    private static void ProcessGenericReport(StreamWriter streamWriter, string reportName,string rowFormat, IList<string> rows)
     {
       streamWriter.WriteLine("-------------Report[START]:{0}-------------------", reportName);
+      streamWriter.WriteLine(rowFormat);
       foreach (var row in rows)
       {
         streamWriter.WriteLine(row);
