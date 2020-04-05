@@ -7,7 +7,7 @@ namespace JenkinsLogParser.Reports
   public class ProjectBuildHierarchyReport : Report<ProjectBuildHierarchyReportArgs>
   {
     private static int _Indent;
-    private const int LineNumberWidth = 6;
+    private int LineNumberWidth = 6;
     public ProjectBuildHierarchyReport() : base()
     {
       _Indent = 0;

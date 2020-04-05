@@ -5,6 +5,7 @@ namespace JenkinsLogParser.Reports
 {
   public class WarningByProjectSummaryReport  : Report<WarningByProjectSummaryReportArgs>
   {
+    private const string EXTERNAL = "EXTERNAL";
     private IList<string> ReportRows;
     private Dictionary<string, Dictionary<string, int>> ReportDataRows;
     public WarningByProjectSummaryReport() : base()
@@ -52,10 +53,8 @@ namespace JenkinsLogParser.Reports
       ReportDataRows[projectName][warningName]++;
     }
 
-    private void BuildReportRows()
+    private void BuildReportsRowsUsingProjectList(IList<string> sortedProjectList)
     {
-      var sortedProjectList = ReportDataRows.Keys.ToList();
-      sortedProjectList.Sort();
       foreach (var projectName in sortedProjectList)
       {
         var projectHeaderRow = $"Project: {projectName}";
@@ -69,6 +68,18 @@ namespace JenkinsLogParser.Reports
           ReportRows.Add(reportRow);
         }
       }
+    }
+
+    private void BuildReportRows()
+    {
+      //extract EXTERNAL project to print first 
+      var externalProjectList = ReportDataRows.Keys.Where(rpt => rpt.Equals(EXTERNAL)).ToList();
+      BuildReportsRowsUsingProjectList(externalProjectList);
+
+      //extract ALL BUT EXTERNAL project to print next
+      var sortedProjectList = ReportDataRows.Keys.Where(rpt=>!rpt.Equals(EXTERNAL)).ToList();
+      sortedProjectList.Sort();
+      BuildReportsRowsUsingProjectList(sortedProjectList);
     }
   }
 

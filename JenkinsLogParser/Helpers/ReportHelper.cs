@@ -20,6 +20,9 @@ namespace JenkinsLogParser.Helpers
       var warningByProjectSummaryReport = new WarningByProjectSummaryReport();
       newDictionary.Add(typeof(WarningByProjectSummaryReport), warningByProjectSummaryReport);
 
+      var timespanItemsReport = new TimestampItemsReport();
+      newDictionary.Add(typeof(TimestampItemsReport), timespanItemsReport);
+
       return newDictionary;
     }
 
@@ -30,14 +33,15 @@ namespace JenkinsLogParser.Helpers
         ProcessProjectBuildHierarchyReport(streamWriter, reports);
         ProcessWarningSummaryReport(streamWriter, reports);
         ProcessWarningsByProjectReport(streamWriter, reports);
+        ProcessTimestampItemsReport(streamWriter, reports);
       }
     }
-    
+
     private static void ProcessProjectBuildHierarchyReport(StreamWriter streamWriter, IDictionary<Type, object> reports)
     {
       var projectBuildReport = (ProjectBuildHierarchyReport)DelegateHelper.GetReport(reports, typeof(ProjectBuildHierarchyReport));
       var projectBuildReportRows = projectBuildReport.GetReportRows();
-      ProcessGenericReport(streamWriter, "Warning Summary", projectBuildReportRows);
+      ProcessGenericReport(streamWriter, "Project Build Hierarchy", projectBuildReportRows);
     }
 
     private static void ProcessWarningSummaryReport(StreamWriter streamWriter, IDictionary<Type, object> reports)
@@ -54,6 +58,13 @@ namespace JenkinsLogParser.Helpers
         (WarningByProjectSummaryReport)DelegateHelper.GetReport(reports, typeof(WarningByProjectSummaryReport));
       var warningByProjectSummaryReportRows = warningByProjectSummaryReport.GetReportRows();
       ProcessGenericReport(streamWriter, "Warnings By Projects Summary", warningByProjectSummaryReportRows);
+    }
+
+    private static void ProcessTimestampItemsReport(StreamWriter streamWriter, IDictionary<Type, object> reports)
+    {
+      var timestampItemsReport = (TimestampItemsReport)DelegateHelper.GetReport(reports, typeof(TimestampItemsReport));
+      var timestampItemsReportRows = timestampItemsReport.GetReportRows();
+      ProcessGenericReport(streamWriter, "Timestamp Items", timestampItemsReportRows);
     }
 
     private static void ProcessGenericReport(StreamWriter streamWriter, string reportName, IList<string> rows)

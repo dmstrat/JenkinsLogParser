@@ -5,7 +5,7 @@ namespace JenkinsLogParser.Helpers
 {
   public static class TimeHelper
   {
-    public static TimeSpan GenerateTimestampFromLine(string line)
+    public static TimeSpan GenerateTimespanFromLine(string line)
     {
       var returnValue = new TimeSpan();
       var timestampRegEx = new Regex(@"\d+\:\d+\:\d+\.\d{0,3}");

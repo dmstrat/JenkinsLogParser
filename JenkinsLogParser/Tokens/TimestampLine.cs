@@ -1,8 +1,7 @@
-﻿using System;
-using System.Text.RegularExpressions;
-using JenkinsLogParser.Events;
-using JenkinsLogParser.Events.Projects;
+﻿using JenkinsLogParser.Events;
 using JenkinsLogParser.Helpers;
+using System;
+using System.Text.RegularExpressions;
 
 namespace JenkinsLogParser.Tokens
 {
@@ -39,7 +38,7 @@ namespace JenkinsLogParser.Tokens
       if (result.Success)
       {
         Line = result.Value;
-        Timespan = TimeHelper.GenerateTimestampFromLine(Line);
+        Timespan = TimeHelper.GenerateTimespanFromLine(Line);
         RaiseTimestampAddedEvent(lineNumber, Line, logLine);
       }
       return result.Success;
@@ -58,7 +57,8 @@ namespace JenkinsLogParser.Tokens
       {
         LineNumber = lineNumber,
         FullText = fullText,
-        RegExResult = line
+        RegExResult = line,
+        TimeSpan = TimeHelper.GenerateTimespanFromLine(line)
       };
       return args;
     }
