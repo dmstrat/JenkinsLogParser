@@ -6,6 +6,7 @@
 
     public ProjectEnded(ProjectEndedEventArgs args): base(args)
     {
+      RegExResult = args.ProjectName;
     }
   }
 

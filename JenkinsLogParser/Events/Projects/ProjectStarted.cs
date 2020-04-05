@@ -2,11 +2,11 @@
 {
   public class ProjectStarted : EventBase
   {
-    public string ProjectName { get; set; }
+    public string ProjectName => RegExResult;
 
     public ProjectStarted(ProjectStartedEventArgs args): base(args)
     {
-      ProjectName = args.ProjectName;
+      RegExResult = args.ProjectName;
     }
   }
 
