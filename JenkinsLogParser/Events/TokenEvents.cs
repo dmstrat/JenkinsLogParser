@@ -35,7 +35,7 @@ namespace JenkinsLogParser.Events
       set => _Actions = value;
     }
 
-    private static void Register<T>(Action<T> callback) where T : ITokenEvent
+    public static void Register<T>(Action<T> callback) where T : ITokenEvent
     {
       Actions.Add(callback);
     }

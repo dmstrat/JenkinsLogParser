@@ -68,15 +68,5 @@ namespace JenkinsLogParser.Tokens
       };
       return projectStartedEventArgs;
     }
-
-    public string GetLine()
-    {
-      return "Project:" + Line + " START ";
-    }
-
-    public string GetMatch()
-    {
-      return Line;
-    }
   }
 }

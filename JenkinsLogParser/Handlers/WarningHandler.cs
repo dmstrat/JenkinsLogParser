@@ -58,14 +58,14 @@ namespace JenkinsLogParser.Handlers
     {
       var report = WarningSummaryReport;
       var reportArgs = GenerateWarningSummaryReportArgs(warningAddedEvent);
-      report.GenerateReportRow(reportArgs);
+      report.AddDataRow(reportArgs);
     }
 
     private void AddWarningToWarningByProjectSummaryReport(WarningAdded warningAddedEvent)
     {
       var report = WarningByProjectSummaryReport;
       var reportArgs = GenerateWarningByProjectSummaryReportArgs(warningAddedEvent);
-      report.GenerateReportRow(reportArgs);
+      report.AddDataRow(reportArgs);
     }
 
     private WarningByProjectSummaryReportArgs GenerateWarningByProjectSummaryReportArgs(WarningAdded warningAddedEvent)
@@ -91,6 +91,5 @@ namespace JenkinsLogParser.Handlers
     {
       _ProjectStack.Push(projectName);
     }
-
   }
 }

@@ -10,6 +10,7 @@ namespace JenkinsLogParser.Reports
     private Dictionary<string, Dictionary<string, int>> _ReportDataRows;
     private int _CountPadding = 5;
     private int _WarningPadding = 12;
+
     public WarningByProjectSummaryReport() : base()
     {
       _ReportRows = new List<string>();
@@ -24,20 +25,19 @@ namespace JenkinsLogParser.Reports
       return _ReportRows;
     }
 
+    public override void AddDataRow(WarningByProjectSummaryReportArgs args)
+    {
+      EnsureProjectInDictionary(args.ProjectName);
+      EnsureWarningInProjectInDictionary(args.ProjectName, args.WarningName);
+      IncrementWarningCountInProject(args.ProjectName, args.WarningName);
+    }
+
     private void BuildPaddingNumbers()
     {
       var maxWarningStringLength = _ReportDataRows.Max(row => row.Value.Keys.Max(ro=>ro.Length));
       _WarningPadding = maxWarningStringLength;
       var maxCountStringLength = _ReportDataRows.Max(row => row.Value.Values.Max(ro => ro.ToString().Length));
       _CountPadding = maxCountStringLength;
-    }
-
-    public override string GenerateReportRow(WarningByProjectSummaryReportArgs args)
-    {
-      EnsureProjectInDictionary(args.ProjectName);
-      EnsureWarningInProjectInDictionary(args.ProjectName, args.WarningName);
-      IncrementWarningCountInProject(args.ProjectName, args.WarningName);
-      return string.Empty;
     }
 
     private void EnsureProjectInDictionary(string projectName)

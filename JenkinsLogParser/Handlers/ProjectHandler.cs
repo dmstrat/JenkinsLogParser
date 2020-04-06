@@ -22,7 +22,7 @@ namespace JenkinsLogParser.Handlers
         ProjectName = tokenEvent.ProjectName,
         Action = ProjectAction.Start
       };
-      report.GenerateReportRow(reportArgs);
+      report.AddDataRow(reportArgs);
     }
 
     public void Handle(ProjectEnded tokenEvent)
@@ -34,7 +34,7 @@ namespace JenkinsLogParser.Handlers
         ProjectName = tokenEvent.ProjectName,
         Action = ProjectAction.End
       };
-      report.GenerateReportRow(reportArgs);
+      report.AddDataRow(reportArgs);
     }
   }
 }

@@ -5,7 +5,7 @@ namespace JenkinsLogParser.Reports
 {
   public abstract class Report<T> : Report where T : ReportArgs 
   {
-    public abstract string GenerateReportRow(T args);
+    public abstract void AddDataRow(T args);
   }
 
   public class Report : IEnumerable<string> 

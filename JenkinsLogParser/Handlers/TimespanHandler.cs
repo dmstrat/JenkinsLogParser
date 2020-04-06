@@ -21,7 +21,7 @@ namespace JenkinsLogParser.Handlers
         LineText = tokenEvent.FullText,
         Timespan = tokenEvent.TimeSpan
       };
-      report.GenerateReportRow(reportArgs);
+      report.AddDataRow(reportArgs);
     }
   }
 }

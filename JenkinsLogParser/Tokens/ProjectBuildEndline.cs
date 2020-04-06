@@ -20,16 +20,6 @@ namespace JenkinsLogParser.Tokens
       ReplaceRegularExpression = new Regex(@"^\s*|\s*$", Options);
     }
 
-    public IToken GetClone()
-    {
-      return (IToken)MemberwiseClone();
-    }
-
-    public bool PrintIndividualLine()
-    {
-      return true;
-    }
-
     public bool ProcessLine(long lineNumber, string logLine)
     {
       var tempLogLine = logLine;
@@ -60,16 +50,6 @@ namespace JenkinsLogParser.Tokens
         ProjectName = line
       };
       return args;
-    }
-
-    public string GetLine()
-    {
-      return "Project:" + Line + " END ";
-    }
-
-    public string GetMatch()
-    {
-      return Line;
     }
   }
 }

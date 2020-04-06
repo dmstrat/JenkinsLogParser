@@ -31,11 +31,10 @@ namespace JenkinsLogParser.Reports
       _CountPadding = maxCountLength;
     }
 
-    public override string GenerateReportRow(WarningSummaryReportArgs args)
+    public override void AddDataRow(WarningSummaryReportArgs args)
     {
       VerifyWarningInSummary(args.WarningName);
       IncrementWarningCountInSummary(args.WarningName);
-      return string.Empty;
     }
 
     private void BuildReportRows()

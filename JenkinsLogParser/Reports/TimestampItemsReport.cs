@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using JenkinsLogParser.DataModels;
 
 namespace JenkinsLogParser.Reports
 {
@@ -10,6 +11,7 @@ namespace JenkinsLogParser.Reports
     private int _TextPaddingWidth = 50;
     private IList<TimestampDataRow> ReportDataRows;
     private IList<string> ReportRows;
+
     public TimestampItemsReport() : base()
     {
       ReportDataRows = new List<TimestampDataRow>();
@@ -21,6 +23,12 @@ namespace JenkinsLogParser.Reports
       BuildPaddingNumbers();
       BuildReportRows();
       return ReportRows;
+    }
+
+    public override void AddDataRow(TimestampItemsReportArgs args)
+    {
+      var reportRow = GenerateDataRowFromArguments(args);
+      ReportDataRows.Add(reportRow);
     }
 
     private void BuildPaddingNumbers()
@@ -53,21 +61,33 @@ namespace JenkinsLogParser.Reports
 
     private void BuildMultiLineReport(IList<TimestampDataRow> reportDataRows)
     {
-      TimeSpan previousTimeSpan;
-      TimeSpan nextTimeSpan;
-      TimeSpan currentTimeSpan;
-      string currentRowText;
-      long currentRowLineNumber;
+      var previousTimeSpan = reportDataRows[0].TimeSpan;
+      var nextTimeSpan = reportDataRows[1].TimeSpan;
+      var currentTimeSpan = reportDataRows[0].TimeSpan;
+      var currentRowText = reportDataRows[0].LineText;
+      var currentRowLineNumber = reportDataRows[0].LineNumber;
+      var firstReportRow = BuildReportRow(currentRowLineNumber, currentRowText, currentTimeSpan, previousTimeSpan, nextTimeSpan);
+      ReportRows.Add(firstReportRow);
+
       for (int i = 1; i < ReportDataRows.Count - 1; i++)
       {
-        previousTimeSpan = ReportDataRows[i - 1].TimeSpan;
-        nextTimeSpan = ReportDataRows[i + 1].TimeSpan;
-        currentTimeSpan = ReportDataRows[i].TimeSpan;
-        currentRowText = ReportDataRows[i].LineText;
-        currentRowLineNumber = ReportDataRows[i].LineNumber;
+        previousTimeSpan = reportDataRows[i - 1].TimeSpan;
+        nextTimeSpan = reportDataRows[i + 1].TimeSpan;
+        currentTimeSpan = reportDataRows[i].TimeSpan;
+        currentRowText = reportDataRows[i].LineText;
+        currentRowLineNumber = reportDataRows[i].LineNumber;
         var newReportRow = BuildReportRow(currentRowLineNumber, currentRowText, currentTimeSpan, previousTimeSpan, nextTimeSpan);
         ReportRows.Add(newReportRow);
       }
+
+      previousTimeSpan = reportDataRows[^2].TimeSpan;
+      nextTimeSpan = reportDataRows[^1].TimeSpan;
+      currentTimeSpan = reportDataRows[^1].TimeSpan;
+      currentRowText = reportDataRows[^1].LineText;
+      currentRowLineNumber = reportDataRows[^1].LineNumber;
+      var lastReportRow = BuildReportRow(currentRowLineNumber, currentRowText, currentTimeSpan, previousTimeSpan, nextTimeSpan);
+      ReportRows.Add(lastReportRow);
+
     }
 
     private string BuildReportRow(in long currentRowLineNumber, string currentRowText, in TimeSpan currentTimeSpan, in TimeSpan previousTimeSpan, in TimeSpan nextTimeSpan)
@@ -100,14 +120,7 @@ namespace JenkinsLogParser.Reports
       ReportRows.Add(reportRow);
     }
 
-    public override string GenerateReportRow(TimestampItemsReportArgs args)
-    {
-      var reportRow = GenerateReportRowFromArguments(args);
-      ReportDataRows.Add(reportRow);
-      return string.Empty;
-    }
-
-    private TimestampDataRow GenerateReportRowFromArguments(TimestampItemsReportArgs args)
+    private TimestampDataRow GenerateDataRowFromArguments(TimestampItemsReportArgs args)
     {
       var timespanDataRow = new TimestampDataRow
       {
@@ -124,12 +137,5 @@ namespace JenkinsLogParser.Reports
     public long LineNumber { get; set; }
     public string LineText { get; set; }
     public TimeSpan Timespan { get; set; }
-  }
-
-  public class TimestampDataRow
-  {
-    public long LineNumber { get; set; }
-    public string LineText { get; set; }
-    public TimeSpan TimeSpan { get; set; }
   }
 }

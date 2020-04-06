@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using JenkinsLogParser.DataModels;
 
 namespace JenkinsLogParser.Reports
 {
@@ -44,11 +45,10 @@ namespace JenkinsLogParser.Reports
       }
     }
 
-    public override string GenerateReportRow(ProjectBuildHierarchyReportArgs args)
+    public override void AddDataRow(ProjectBuildHierarchyReportArgs args)
     {
       var reportRow = GenerateReportRowFromArguments(args);
       ReportDataRows.Add(reportRow);
-      return string.Empty;
     }
 
     private ProjectBuildHierarchyReportRow GenerateReportRowFromArguments(ProjectBuildHierarchyReportArgs args)
@@ -103,12 +103,4 @@ namespace JenkinsLogParser.Reports
     Start,
     End
   }
-
-  public class ProjectBuildHierarchyReportRow
-  {
-    public long LineNumber { get; set; }
-    public string ProjectName { get; set; }
-    public ProjectAction Action { get; set; }
-  }
-
 }
