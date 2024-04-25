@@ -2,7 +2,7 @@
   "profiles": {
     "ParserConsole": {
       "commandName": "Project",
-      "commandLineArgs": "\"C:\\Parser\\logFile.txt\" \"C:\\Parser\\output.txt\""
+      "commandLineArgs": "--i \"C:\\Parser\\RetailWfm20240425_build19245.txt\" --o \"C:\\Parser\\RetailWfm20240425_build19245.report.txt\""
     }
   }
 }

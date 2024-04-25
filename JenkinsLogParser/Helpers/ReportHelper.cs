@@ -28,13 +28,11 @@ namespace JenkinsLogParser.Helpers
 
     public static void ProcessReports(IDictionary<Type, object> reports, FileInfo outputFileInfo)
     {
-      using (var streamWriter = new StreamWriter(outputFileInfo.FullName, false))
-      {
-        ProcessProjectBuildHierarchyReport(streamWriter, reports);
-        ProcessWarningSummaryReport(streamWriter, reports);
-        ProcessWarningsByProjectReport(streamWriter, reports);
-        ProcessTimestampItemsReport(streamWriter, reports);
-      }
+      using var streamWriter = new StreamWriter(outputFileInfo.FullName, false);
+      ProcessProjectBuildHierarchyReport(streamWriter, reports);
+      ProcessWarningSummaryReport(streamWriter, reports);
+      ProcessWarningsByProjectReport(streamWriter, reports);
+      ProcessTimestampItemsReport(streamWriter, reports);
     }
 
     private static void ProcessProjectBuildHierarchyReport(StreamWriter streamWriter, IDictionary<Type, object> reports)

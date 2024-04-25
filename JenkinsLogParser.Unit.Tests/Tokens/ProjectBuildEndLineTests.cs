@@ -7,13 +7,6 @@ namespace JenkinsLogParser.Unit.Tests.Tokens
   [TestClass]
   public class ProjectBuildEndLineTests
   {
-    [ClassInitialize]
-    public static void ClassInitialize(TestContext testContext)
-    {
-      var testDelegateHelper = new TestDelegateHelper();
-      var testDelegateHandlers = testDelegateHelper.BuildTestDelegatesDictionary();
-    }
-
     [TestMethod]
     public void WhenProjectEndLineIsProvidedWeFindAMatchAndGetEsoSmApiAsResult()
     {
@@ -38,7 +31,6 @@ namespace JenkinsLogParser.Unit.Tests.Tokens
       var tokenMatchesLine = token.ProcessLine(lineNumber, testLine);
       Assert.IsNotNull(token);
       Assert.IsTrue(tokenMatchesLine, "Token didn't match line as expected:" + testLine);
-      var expectedLine = "Project:nApeLibrary END ";
       var expectedRegexMatch = "nApeLibrary";
       var actualEventExists = EventHelper.HasSpecificProjectEndedEvent(lineNumber, testLine, expectedRegexMatch);
       Assert.IsTrue(actualEventExists);

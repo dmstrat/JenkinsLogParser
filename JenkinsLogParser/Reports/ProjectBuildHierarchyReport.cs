@@ -10,7 +10,7 @@ namespace JenkinsLogParser.Reports
     private static int _Indent;
     private int _LineNumberWidth = 6;
     private IList<string> _ReportRows;
-    private IList<ProjectBuildHierarchyReportRow> ReportDataRows;
+    private readonly IList<ProjectBuildHierarchyReportRow> ReportDataRows;
     public ProjectBuildHierarchyReport() : base()
     {
       _Indent = 0;

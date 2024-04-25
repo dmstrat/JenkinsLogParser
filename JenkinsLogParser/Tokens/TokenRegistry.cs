@@ -9,7 +9,7 @@ namespace JenkinsLogParser.Tokens
   {
     public static IList<IToken> Tokens => GetTokens();
 
-    private static IList<IToken> _Tokens { get; set; }
+    private static IList<IToken> _Tokens;
 
     private static IList<IToken> GetTokens()
     {
