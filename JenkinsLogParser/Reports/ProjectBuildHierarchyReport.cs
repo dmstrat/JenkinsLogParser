@@ -17,6 +17,16 @@ namespace JenkinsLogParser.Reports
       ReportDataRows = new List<ProjectBuildHierarchyReportRow>();
     }
 
+    public override string GetReportName()
+    {
+      return "Project Build Hierarchy";
+    }
+
+    public override string GetReportRowHeaders()
+    {
+      return "[LineNumber]:Project: [ProjectName]:[Action]";
+    }
+
     public override IList<string> GetReportRows()
     {
       _ReportRows = new List<string>();

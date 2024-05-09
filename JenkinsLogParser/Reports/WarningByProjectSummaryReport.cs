@@ -17,6 +17,16 @@ namespace JenkinsLogParser.Reports
       _ReportDataRows = new Dictionary<string, Dictionary<string, int>>();
     }
 
+    public override string GetReportName()
+    {
+      return "Warnings By Projects Summary";
+    }
+
+    public override string GetReportRowHeaders()
+    {
+      return "Project: [ProjectName] \r\n  Warning:[WarningName]:[Count]";
+    }
+
     public override IList<string> GetReportRows()
     {
       _ReportRows = new List<string>();
