@@ -16,6 +16,7 @@ namespace JenkinsLogParser.Helpers
       var warningSummaryReport = (WarningSummaryReport)GetReport(reports, typeof(WarningSummaryReport));
       var warningByProjectSummaryReport = (WarningByProjectSummaryReport)GetReport(reports, typeof(WarningByProjectSummaryReport));
       var timespanItemsReport = (TimestampItemsReport) GetReport(reports, typeof(TimestampItemsReport));
+      var dotCoverItemsReport = (DotCoverItemsReport)GetReport(reports, typeof(DotCoverItemsReport));
 
       var newDelegates = new List<Delegate>();
 
@@ -31,6 +32,10 @@ namespace JenkinsLogParser.Helpers
       var timespanHandler = new TimespanHandler(ref timespanItemsReport);
       newDelegates.Add((Action<TimestampAdded>) timespanHandler.Handle);
 
+      var dotCoverHandler = new DotCoverHandler(ref dotCoverItemsReport);
+      newDelegates.Add((Action<DotCoverStarted>) dotCoverHandler.Handle);
+      newDelegates.Add((Action<DotCoverEnded>) dotCoverHandler.Handle);
+      newDelegates.Add((Action<DotCoverCoverExecutionAdded>) dotCoverHandler.Handle);
       return newDelegates;
     }
 

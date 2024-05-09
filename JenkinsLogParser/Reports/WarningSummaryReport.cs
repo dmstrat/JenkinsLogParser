@@ -15,6 +15,16 @@ namespace JenkinsLogParser.Reports
       _ReportDataRows = new Dictionary<string, int>();
     }
 
+    public override string GetReportName()
+    {
+      return "Warning Summary";
+    }
+
+    public override string GetReportRowHeaders()
+    {
+      return "Warning: [WarningName]:[Count]";
+    }
+
     public override IList<string> GetReportRows()
     {
       BuildPaddingNumbers();

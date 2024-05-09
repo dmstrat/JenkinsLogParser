@@ -17,6 +17,16 @@ namespace JenkinsLogParser.Reports
       ReportDataRows = new List<TimestampDataRow>();
     }
 
+    public override string GetReportName()
+    {
+      return "Timestamp Items";
+    }
+
+    public override string GetReportRowHeaders()
+    {
+      return "[LineNumber]:[Line Text]:(from last)[Duration from previous timestamp]: | (to next) [Duration to next timestamp]";
+    }
+
     public override IList<string> GetReportRows()
     {
       ReportRows = new List<string>();
