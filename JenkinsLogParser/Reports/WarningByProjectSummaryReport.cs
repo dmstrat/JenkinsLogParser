@@ -27,7 +27,7 @@ namespace JenkinsLogParser.Reports
 
     public override string GetReportRowHeaders()
     {
-      return "Project: [ProjectName] \r\n  Warning:[WarningName]:[Count]:[Description or Sample Entry]";
+      return "Project: [ProjectName]:Total Warnings:[Total Warning Count]: \r\n  Warning:[WarningName]:[Count]:[Description or Sample Entry]";
     }
 
     public override IList<string> GetReportRows()
@@ -116,7 +116,9 @@ namespace JenkinsLogParser.Reports
     {
       foreach (var projectName in sortedProjectList)
       {
-        var projectHeaderRow = $"Project: {projectName}";
+        var projectTotalWarningCount = _ReportDataRows[projectName].Sum(x => x.Value);
+
+      var projectHeaderRow = $"Project: {projectName}: Total Warnings:{projectTotalWarningCount}";
         _ReportRows.Add(projectHeaderRow);
         var sortedWarningsList = _ReportDataRows[projectName].OrderByDescending(x=>x.Value);//.Keys.ToList();
 

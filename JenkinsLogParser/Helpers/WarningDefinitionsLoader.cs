@@ -8,9 +8,16 @@ namespace JenkinsLogParser.Helpers
 {
   internal static class WarningDefinitionsLoader
   {
+    private const string WARNINGS_DEFINITION_JSON = @"Data/WarningDefinitions.json";
+
+    private static readonly JsonSerializerOptions JsonSerializerOptions = new()
+    {
+      PropertyNameCaseInsensitive = true
+    };
+
     public static Dictionary<string, string> LoadWarnings()
     {
-     var warningsDefinitions = JsonFileReader.Read<WarningDefinitionSource>(@"Data/WarningDefinitions.json");
+     var warningsDefinitions = JsonFileReader.Read<WarningDefinitionResource>(WARNINGS_DEFINITION_JSON);
      var returnCollection = new Dictionary<string, string>();
      foreach (var definition in warningsDefinitions.Definitions)
      {
@@ -30,12 +37,8 @@ namespace JenkinsLogParser.Helpers
     {
       public static T Read<T>(string filePath)
       {
-        var options = new JsonSerializerOptions
-        {
-          PropertyNameCaseInsensitive = true
-        };
-        string text = File.ReadAllText(filePath);
-        return JsonSerializer.Deserialize<T>(text, options);
+        var text = File.ReadAllText(filePath);
+        return JsonSerializer.Deserialize<T>(text, JsonSerializerOptions);
       }
     }
   }

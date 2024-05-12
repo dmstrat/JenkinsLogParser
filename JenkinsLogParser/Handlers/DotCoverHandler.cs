@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
-using JenkinsLogParser.Events.DotCover;
+﻿using JenkinsLogParser.Events.DotCover;
 using JenkinsLogParser.Reports;
 
 namespace JenkinsLogParser.Handlers
 {
-    public class DotCoverHandler : IHandles<DotCoverStarted>, IHandles<DotCoverEnded>, IHandles<DotCoverCoverExecutionAdded>
+  public class DotCoverHandler : IHandles<DotCoverStarted>, 
+                                 IHandles<DotCoverEnded>, 
+                                 IHandles<DotCoverCoverExecutionAdded>
   {
-    private DotCoverItemsReport _DotCoverItemsReport;
+    private readonly DotCoverItemsReport _DotCoverItemsReport;
 
     public DotCoverHandler(ref DotCoverItemsReport dotCoverItemsReport)
     {
@@ -20,8 +21,7 @@ namespace JenkinsLogParser.Handlers
 
     public void Handle(DotCoverStarted tokenEvent)
     {
-      var report = _DotCoverItemsReport;
-      report.AddDataRow(tokenEvent.LineNumber, tokenEvent.FullText, DotCoverAction.Start, tokenEvent.Timestamp);
+      _DotCoverItemsReport.AddDataRow(tokenEvent.LineNumber, tokenEvent.FullText, DotCoverAction.Start, tokenEvent.Timestamp);
     }
 
     public void Handle(DotCoverEnded tokenEvent)

@@ -5,7 +5,7 @@ namespace JenkinsLogParser.Handlers
 {
   public class TimespanHandler : IHandles<TimestampAdded>
   {
-    private TimestampItemsReport _TimespanItemsReport;
+    private readonly TimestampItemsReport _TimespanItemsReport;
 
     public TimespanHandler(ref TimestampItemsReport timestampItemsReport)
     {
@@ -14,14 +14,13 @@ namespace JenkinsLogParser.Handlers
 
     public void Handle(TimestampAdded tokenEvent)
     {
-      var report = _TimespanItemsReport;
       var reportArgs = new TimestampItemsReportArgs
       {
         LineNumber = tokenEvent.LineNumber,
         LineText = tokenEvent.FullText,
         Timespan = tokenEvent.TimeSpan
       };
-      report.AddDataRow(reportArgs);
+      _TimespanItemsReport.AddDataRow(reportArgs);
     }
   }
 }

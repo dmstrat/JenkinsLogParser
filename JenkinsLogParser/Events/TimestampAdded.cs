@@ -2,18 +2,13 @@
 
 namespace JenkinsLogParser.Events
 {
-  public class TimestampAdded : EventBase
+  public class TimestampAdded(TimestampAddedEventArgs args) : EventBase(args)
   {
-    public TimeSpan TimeSpan { get; set; }
-    public TimestampAdded(TimestampAddedEventArgs args) : base(args)
-    {
-      TimeSpan = args.TimeSpan;
-    }
+    public TimeSpan TimeSpan { get; set; } = args.TimeSpan;
   }
 
   public class TimestampAddedEventArgs : EventArgsBase
   {
     public TimeSpan TimeSpan { get; set; }
   }
-
 }

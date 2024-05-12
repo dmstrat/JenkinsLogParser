@@ -1,19 +1,19 @@
 ﻿using JenkinsLogParser.Events.Projects;
-using System.Collections.Generic;
 using JenkinsLogParser.Reports;
+using System.Collections.Generic;
 
 namespace JenkinsLogParser.Handlers
 {
   public class WarningHandler : IHandles<ProjectStarted>,
-                                IHandles<WarningAdded>,
-                                IHandles<ProjectEnded>
+    IHandles<WarningAdded>,
+    IHandles<ProjectEnded>
   {
     private static Stack<string> _ProjectStack;
     internal WarningSummaryReport WarningSummaryReport;
     internal WarningByProjectSummaryReport WarningByProjectSummaryReport;
     private const string EXTERNAL = "EXTERNAL";
 
-    internal string CurrentProject
+    internal static string CurrentProject
     {
       get
       {
@@ -22,11 +22,13 @@ namespace JenkinsLogParser.Handlers
         {
           return _ProjectStack.Peek();
         }
+
         return EXTERNAL;
       }
     }
 
-    public WarningHandler(ref WarningSummaryReport warningSummary, ref WarningByProjectSummaryReport warningByProjectSummaryReport)
+    public WarningHandler(ref WarningSummaryReport warningSummary,
+      ref WarningByProjectSummaryReport warningByProjectSummaryReport)
     {
       WarningSummaryReport = warningSummary;
       WarningByProjectSummaryReport = warningByProjectSummaryReport;
@@ -88,7 +90,7 @@ namespace JenkinsLogParser.Handlers
       return reportArgs;
     }
 
-    private void AddProjectToStack(string projectName)
+    private static void AddProjectToStack(string projectName)
     {
       _ProjectStack.Push(projectName);
     }
