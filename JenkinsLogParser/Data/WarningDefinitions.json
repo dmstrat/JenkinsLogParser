@@ -1,0 +1,228 @@
+{
+  "Definitions": [
+    {
+      "name": "S112",
+      "description": "System.Exception' should not be thrown by user code."
+    },
+    {
+      "name": "S101",
+      "description": "Rename class '{class name}' to match pascal case naming rules, consider using '{class name reformatted}'."
+    },
+    {
+      "name": "S103",
+      "description": "Line too long."
+    },
+    {
+      "name": "S104",
+      "description": "Too many lines in file."
+    },
+    {
+      "name": "S105",
+      "description": "Replace all tab characters in this file by sequences of white-spaces."
+    },
+    {
+      "name": "S107",
+      "description": "Method has too many parameters."
+    },
+    {
+      "name": "S1116",
+      "description": "Remove this empty statement."
+    },
+    {
+      "name": "S1118",
+      "description": "Add a 'protected' constructor or the 'static' keyword to the class declaration."
+    },
+    {
+      "name": "S2325",
+      "description": "Make '{method name}' a static method."
+    },
+    {
+      "name": "S3776",
+      "description": "Refactor this method to reduce its Cognitive Complexity from {exceeding number} to the {configured number} allowed."
+    },
+    {
+      "name": "S3928",
+      "description": "The parameter name '{text in argument}' is not declared in the argument list."
+    },
+    {
+      "name": "S4056",
+      "description": "Use the overload that takes a 'CultureInfo' or 'IFormatProvider' parameter."
+    },
+    {
+      "name": "S1144",
+      "description": "Remove the unused private method '{method name}'."
+    },
+    {
+      "name": "S1172",
+      "description": "Remove this unused method parameter '{parameter name}'."
+    },
+    {
+      "name": "S122",
+      "description": "Reformat the code to have only one statement per line."
+    },
+    {
+      "name": "S1244",
+      "description": "Do not check floating point inequality with exact values, use a range instead. "
+    },
+    {
+      "name": "S125",
+      "description": "Remove this commented out code."
+    },
+    {
+      "name": "S131",
+      "description": "Add a 'default' clause to this 'switch' statement."
+    },
+    {
+      "name": "S1481",
+      "description": "Remove the unused local variable '{variable name'."
+    },
+    {
+      "name": "S1541",
+      "description": "The Cyclomatic Complexity of this method is X which is greater than number authorized."
+    },
+    {
+      "name": "S2223",
+      "description": "Change the visibility of '{variable name}' or make it 'const' or 'readonly'."
+    },
+    {
+      "name": "S2342",
+      "description": "Rename this enumeration to match the regular expression: '{naming rule for enums}'."
+    },
+    {
+      "name": "S2357",
+      "description": "Make '{variable name}' private."
+    },
+    {
+      "name": "S2971",
+      "description": "Drop this useless call to 'ToList' or replace it by 'AsEnumerable' if you are using LINQ to Entities."
+    },
+    {
+      "name": "S3052",
+      "description": "Remove this initialization to '_useDeveloperQueueSegment', the compiler will do that for you."
+    },
+    {
+      "name": "S3237",
+      "description": "Use the 'value' parameter in this property set accessor declaration."
+    },
+    {
+      "name": "S3242",
+      "description": "Consider using more general type '{another type based on inspection}' instead of '{currently used type}'."
+    },
+    {
+      "name": "S3247",
+      "description": "Replace this type-check-and-cast sequence with an 'as' and a null check."
+    },
+    {
+      "name": "S3442",
+      "description": "Change the visibility of this constructor to 'protected'."
+    },
+    {
+      "name": "S3445",
+      "description": "Consider using 'throw;' to preserve the stack trace."
+    },
+    {
+      "name": "S3693",
+      "description": "Avoid throwing exceptions in this constructor."
+    },
+    {
+      "name": "S3874",
+      "description": "Consider refactoring this method in order to remove the need for this 'out' modifier."
+    },
+    {
+      "name": "S3875",
+      "description": "Remove this overload of 'operator =='."
+    },
+    {
+      "name": "S3881",
+      "description": "Fix this implementation of 'IDisposable' to conform to the dispose pattern."
+    },
+    {
+      "name": "S3925",
+      "description": "Update this implementation of 'ISerializable' to conform to the recommended serialization pattern."
+    },
+    {
+      "name": "S3956",
+      "description": "Refactor this property to use a generic collection designed for inheritance."
+    },
+    {
+      "name": "S3962",
+      "description": "Replace this 'static readonly' declaration with 'const'."
+    },
+    {
+      "name": "S3963",
+      "description": "Initialize all 'static fields' inline and remove the 'static constructor'."
+    },
+    {
+      "name": "S4017",
+      "description": "Refactor this method to remove the nested type argument."
+    },
+    {
+      "name": "S4018",
+      "description": "Refactor this method to have parameters matching all the type parameters."
+    },
+    {
+      "name": "S4023",
+      "description": "Remove this interface or add members to it."
+    },
+    {
+      "name": "S4027",
+      "description": "Implement the missing constructors for this exception."
+    },
+    {
+      "name": "S4039",
+      "description": "Make '{class name}' sealed, change to a non-explicit declaration, or provide a new method exposing the functionality of '{inherited class or interface}'."
+    },
+    {
+      "name": "S4040",
+      "description": "Change this normalization to 'ToUpperInvariant()'."
+    },
+    {
+      "name": "S4058",
+      "description": "Change this call to '{method call}' to an overload that accepts a '{recommended parameter type}' as a parameter."
+    },
+    {
+      "name": "S4059",
+      "description": "Change either the name of property '{property name}' or the name of method '{method name}' to make them distinguishable."
+    },
+    {
+      "name": "S4060",
+      "description": "Seal this attribute or make it abstract."
+    },
+    {
+      "name": "CS0436",
+      "description": "The type '{type name}' in '{file location}' conflicts with the imported type '{type name}' in '{full class definition and file location}'."
+    },
+    {
+      "name": "S1210",
+      "description": "When implementing IComparable or IComparable<T> or IComparable<T>, you should also override <, >, <=, >=, ==, !=. "
+    },
+    {
+      "name": "S3443",
+      "description": "Remove this use of 'GetType' on a 'System.Type'."
+    },
+    {
+      "name": "S3906",
+      "description": "Change the signature of that event handler to match the specified signature."
+    },
+    {
+      "name": "S3908",
+      "description": "Refactor this delegate to use 'System.EventHandler<TEventArgs>'."
+    },
+    {
+      "name": "S3909",
+      "description": "Refactor this collection to implement 'System.Collections.Generic.IEnumerable<T>'."
+    },
+    {
+      "name": "S3996",
+      "description": "Change this property type to 'System.Uri'."
+    },
+    {
+      "name": "S4057",
+      "description": "Set the locale for this 'DataTable'."
+    },
+    {
+      "name": "S4069",
+      "description": "Implement alternative method 'Subtract' for the operator '-'."
+    }
+  ]
+}

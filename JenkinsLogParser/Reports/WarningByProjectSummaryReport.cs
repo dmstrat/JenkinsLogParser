@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using JenkinsLogParser.Helpers;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace JenkinsLogParser.Reports
@@ -8,6 +9,7 @@ namespace JenkinsLogParser.Reports
     private const string EXTERNAL = "EXTERNAL";
     private IList<string> _ReportRows;
     private Dictionary<string, Dictionary<string, int>> _ReportDataRows;
+    private Dictionary<string, string> _ReportWarningSampleText;
     private int _CountPadding = 5;
     private int _WarningPadding = 12;
 
@@ -15,6 +17,7 @@ namespace JenkinsLogParser.Reports
     {
       _ReportRows = new List<string>();
       _ReportDataRows = new Dictionary<string, Dictionary<string, int>>();
+      _ReportWarningSampleText = new Dictionary<string, string>();
     }
 
     public override string GetReportName()
@@ -24,21 +27,46 @@ namespace JenkinsLogParser.Reports
 
     public override string GetReportRowHeaders()
     {
-      return "Project: [ProjectName] \r\n  Warning:[WarningName]:[Count]";
+      return "Project: [ProjectName] \r\n  Warning:[WarningName]:[Count]:[Description or Sample Entry]";
     }
 
     public override IList<string> GetReportRows()
     {
-      _ReportRows = new List<string>();
-      BuildPaddingNumbers();
+      InitializeReport();
+      //build header 
       BuildReportRows();
+      //build footer
       return _ReportRows;
+    }
+
+    private void InitializeReport()
+    {
+      _ReportRows = new List<string>();
+      UpdateWarningsDictionaryWithPreDefinedDescriptions();
+      BuildPaddingNumbers();
+    }
+
+    private void UpdateWarningsDictionaryWithPreDefinedDescriptions()
+    {
+      var warningDefinitions = WarningDefinitionsLoader.LoadWarnings();
+      foreach (var warningDefinition in warningDefinitions)
+      {
+        var needToOverrideDescription = _ReportWarningSampleText.ContainsKey(warningDefinition.Key);
+        if(needToOverrideDescription)
+        {
+          _ReportWarningSampleText[warningDefinition.Key] = warningDefinition.Value;
+        }
+        else
+        {
+          _ReportWarningSampleText.Add(warningDefinition.Key,warningDefinition.Value);
+        }
+      }
     }
 
     public override void AddDataRow(WarningByProjectSummaryReportArgs args)
     {
       EnsureProjectInDictionary(args.ProjectName);
-      EnsureWarningInProjectInDictionary(args.ProjectName, args.WarningName);
+      EnsureWarningInProjectInDictionary(args.ProjectName, args.WarningName, args.WarningDefinition);
       IncrementWarningCountInProject(args.ProjectName, args.WarningName);
     }
 
@@ -60,12 +88,22 @@ namespace JenkinsLogParser.Reports
       }
     }
 
-    private void EnsureWarningInProjectInDictionary(string projectName, string warningName)
+    private void EnsureWarningInProjectInDictionary(string projectName, string warningName, string sampleWarningText)
     {
       var warningNotInProjectDictionary = !_ReportDataRows[projectName].ContainsKey(warningName);
       if (warningNotInProjectDictionary)
       {
         _ReportDataRows[projectName].Add(warningName, 0);
+        EnsureWarningInSampleDictionary(warningName, sampleWarningText);
+      }
+    }
+
+    private void EnsureWarningInSampleDictionary(string warningName, string sampleWarningText)
+    {
+      var warningNotYetCached = !_ReportWarningSampleText.ContainsKey(warningName);
+      if (warningNotYetCached)
+      {
+        _ReportWarningSampleText.Add(warningName, sampleWarningText);
       }
     }
 
@@ -74,20 +112,21 @@ namespace JenkinsLogParser.Reports
       _ReportDataRows[projectName][warningName]++;
     }
 
-    private void BuildReportsRowsUsingProjectList(IList<string> sortedProjectList)
+    private void BuildReportsRowsUsingProjectListByCountDescending(IEnumerable<string> sortedProjectList)
     {
       foreach (var projectName in sortedProjectList)
       {
         var projectHeaderRow = $"Project: {projectName}";
         _ReportRows.Add(projectHeaderRow);
-        var sortedWarningsList = _ReportDataRows[projectName].Keys.ToList();
-        sortedWarningsList.Sort();
-        foreach (var warningName in sortedWarningsList)
+        var sortedWarningsList = _ReportDataRows[projectName].OrderByDescending(x=>x.Value);//.Keys.ToList();
+
+        foreach (var warning in sortedWarningsList)
         {
-          var warningCount = _ReportDataRows[projectName][warningName];
+          var warningCount = _ReportDataRows[projectName][warning.Key];
           var warningCountRightAligned = warningCount.ToString().PadLeft(_CountPadding);
-          var warningNameLeftAligned = warningName.PadRight(_WarningPadding);
-          var reportRow = $"  Warning: {warningNameLeftAligned}:{warningCountRightAligned}";
+          var warningNameLeftAligned = warning.Key.PadRight(_WarningPadding);
+          var warningSampleText = _ReportWarningSampleText[warning.Key];
+          var reportRow = $"  Warning: {warningNameLeftAligned}:{warningCountRightAligned}:{warningSampleText}";
           _ReportRows.Add(reportRow);
         }
       }
@@ -97,12 +136,14 @@ namespace JenkinsLogParser.Reports
     {
       //extract EXTERNAL project to print first 
       var externalProjectList = _ReportDataRows.Keys.Where(rpt => rpt.Equals(EXTERNAL)).ToList();
-      BuildReportsRowsUsingProjectList(externalProjectList);
+      //BuildReportsRowsUsingProjectList(externalProjectList);
+      BuildReportsRowsUsingProjectListByCountDescending(externalProjectList);
 
       //extract ALL BUT EXTERNAL project to print next
       var sortedProjectList = _ReportDataRows.Keys.Where(rpt=>!rpt.Equals(EXTERNAL)).ToList();
       sortedProjectList.Sort();
-      BuildReportsRowsUsingProjectList(sortedProjectList);
+      //BuildReportsRowsUsingProjectList(sortedProjectList);
+      BuildReportsRowsUsingProjectListByCountDescending(sortedProjectList);
     }
   }
 
@@ -110,5 +151,6 @@ namespace JenkinsLogParser.Reports
   {
     public string ProjectName { get; set; }
     public string WarningName { get; set; }
+    public string WarningDefinition { get; set; }
   }
 }

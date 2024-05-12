@@ -15,6 +15,7 @@ namespace JenkinsLogParser.Reports
     private int _TextPaddingWidth = 50;
     private IList<DotCoverDataRow> ReportDataRows = new List<DotCoverDataRow>();
     private IList<string> ReportRows;
+    private IList<string> ReportFooterRows;
 
     public override string GetReportName()
     {
@@ -28,10 +29,22 @@ namespace JenkinsLogParser.Reports
 
     public override IList<string> GetReportRows()
     {
+      InitializeReport();
+      if (ReportDataRows.Any())
+      {
+        BuildPaddingNumbers();
+        BuildReportRows();
+        BuildFooter();
+      }
+
+      var returnRows = ReportRows.Concat(ReportFooterRows).ToList();
+      return returnRows;
+    }
+
+    private void InitializeReport()
+    {
       ReportRows = new List<string>();
-      BuildPaddingNumbers();
-      BuildReportRows();
-      return ReportRows;
+      ReportFooterRows = new List<string>();
     }
 
     internal void AddDataRow(long lineNumber, string fullText, DotCoverAction action, string testCategory)
@@ -77,7 +90,6 @@ namespace JenkinsLogParser.Reports
     private void BuildReportRows()
     {
       BuildMultiLineReport(ReportDataRows);
-      BuildFooter();
     }
 
     private void BuildMultiLineReport(IEnumerable<DotCoverDataRow> reportDataRows)
@@ -128,13 +140,30 @@ namespace JenkinsLogParser.Reports
 
     private void BuildFooter()
     {
+      BuildMinMaxReportLine();
+      BuildTotalRuntimeLine();
+      BuildCategoryTotalsLine();
+    }
+
+    private void BuildCategoryTotalsLine()
+    {
+      var totalNumberOfExecutions = ReportRows.Count;
+      var reportLine = $"Total DotCover Executions:{totalNumberOfExecutions}";
+      ReportFooterRows.Add(reportLine);
+    }
+
+    private void BuildTotalRuntimeLine()
+    {
+      var totalTimeSpanFooterRow = $"Total Runtime for DotCover Items: {TotalTimeSpan.ToString()}";
+      ReportFooterRows.Add(totalTimeSpanFooterRow);
+    }
+
+    private void BuildMinMaxReportLine()
+    {
       var minReport = $"Min Runtime:{MinTimeSpan.ToString()}";
       var maxReport = $"Max Runtime:{MaxTimeSpan.ToString()}";
       var footerRow = $"{minReport} - {maxReport}";
-      ReportRows.Add(footerRow);
-
-      var totalTimeSpanFooterRow = $"Total Runtime for DotCover Items: {TotalTimeSpan.ToString()}";
-      ReportRows.Add(totalTimeSpanFooterRow);
+      ReportFooterRows.Add(footerRow);
     }
 
     private string BuildReportRow(in DotCoverDataRow executionRow, in DotCoverDataRow startRow, in DotCoverDataRow endRow)

@@ -73,7 +73,8 @@ namespace JenkinsLogParser.Handlers
       var reportArgs = new WarningByProjectSummaryReportArgs
       {
         ProjectName = CurrentProject,
-        WarningName = warningAddedEvent.WarningName
+        WarningName = warningAddedEvent.WarningName,
+        WarningDefinition = warningAddedEvent.FullText
       };
       return reportArgs;
     }

@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using JenkinsLogParser.Events.Projects;
+using JenkinsLogParser.Events.DotCover;
 using JenkinsLogParser.Reports;
 
 namespace JenkinsLogParser.Handlers
 {
-  public class DotCoverHandler : IHandles<DotCoverStarted>, IHandles<DotCoverEnded>, IHandles<DotCoverCoverExecutionAdded>
+    public class DotCoverHandler : IHandles<DotCoverStarted>, IHandles<DotCoverEnded>, IHandles<DotCoverCoverExecutionAdded>
   {
     private DotCoverItemsReport _DotCoverItemsReport;
 

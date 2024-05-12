@@ -1,11 +1,11 @@
 ﻿using JenkinsLogParser.Events;
-using JenkinsLogParser.Events.Projects;
+using JenkinsLogParser.Events.DotCover;
 using System;
 using System.Text.RegularExpressions;
 
 namespace JenkinsLogParser.Tokens
 {
-  public class JetBrainsDotCoverCoverLine : IToken 
+    public class JetBrainsDotCoverCoverLine : IToken 
   {
     public Regex DotCoverWithoutCategory { get; set; }
     public Regex DotCoverWithCategory { get; set; }
