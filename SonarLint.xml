@@ -501,12 +501,6 @@
       <Parameters/>
     </Rule>
     <Rule>
-      <Key>S3904</Key>
-      <type>CODE_SMELL</type>
-      <priority>MINOR</priority>
-      <Parameters/>
-    </Rule>
-    <Rule>
       <Key>S3906</Key>
       <type>CODE_SMELL</type>
       <priority>MAJOR</priority>
@@ -564,12 +558,6 @@
       <Key>S3963</Key>
       <type>CODE_SMELL</type>
       <priority>MINOR</priority>
-      <Parameters/>
-    </Rule>
-    <Rule>
-      <Key>S3992</Key>
-      <type>CODE_SMELL</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
