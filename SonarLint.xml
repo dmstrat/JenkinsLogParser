@@ -9,14 +9,10 @@
   <Rules>
     <Rule>
       <Key>S101</Key>
-      <type>CODE_SMELL</type>
-      <priority>MINOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S103</Key>
-      <type>CODE_SMELL</type>
-      <priority>MAJOR</priority>
       <Parameters>
         <Parameter>
           <Key>maximumLineLength</Key>
@@ -26,8 +22,6 @@
     </Rule>
     <Rule>
       <Key>S104</Key>
-      <type>CODE_SMELL</type>
-      <priority>MAJOR</priority>
       <Parameters>
         <Parameter>
           <Key>maximumFileLocThreshold</Key>
@@ -37,14 +31,10 @@
     </Rule>
     <Rule>
       <Key>S105</Key>
-      <type>CODE_SMELL</type>
-      <priority>MINOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S107</Key>
-      <type>CODE_SMELL</type>
-      <priority>MAJOR</priority>
       <Parameters>
         <Parameter>
           <Key>max</Key>
@@ -54,8 +44,6 @@
     </Rule>
     <Rule>
       <Key>S110</Key>
-      <type>CODE_SMELL</type>
-      <priority>MAJOR</priority>
       <Parameters>
         <Parameter>
           <Key>max</Key>
@@ -65,104 +53,66 @@
     </Rule>
     <Rule>
       <Key>S1116</Key>
-      <type>CODE_SMELL</type>
-      <priority>MINOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S1118</Key>
-      <type>CODE_SMELL</type>
-      <priority>MINOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S112</Key>
-      <type>CODE_SMELL</type>
-      <priority>BLOCKER</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S1121</Key>
-      <type>CODE_SMELL</type>
-      <priority>MINOR</priority>
-      <Parameters/>
-    </Rule>
-    <Rule>
-      <Key>S1144</Key>
-      <type>CODE_SMELL</type>
-      <priority>INFO</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S1163</Key>
-      <type>CODE_SMELL</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S1172</Key>
-      <type>CODE_SMELL</type>
-      <priority>INFO</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S1206</Key>
-      <type>BUG</type>
-      <priority>MINOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S1210</Key>
-      <type>CODE_SMELL</type>
-      <priority>MINOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S1215</Key>
-      <type>CODE_SMELL</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S122</Key>
-      <type>CODE_SMELL</type>
-      <priority>MINOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S1226</Key>
-      <type>BUG</type>
-      <priority>MINOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S1244</Key>
-      <type>BUG</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S125</Key>
-      <type>CODE_SMELL</type>
-      <priority>MINOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S131</Key>
-      <type>CODE_SMELL</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S1481</Key>
-      <type>CODE_SMELL</type>
-      <priority>CRITICAL</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S1541</Key>
-      <type>CODE_SMELL</type>
-      <priority>INFO</priority>
       <Parameters>
         <Parameter>
           <Key>maximumFunctionComplexityThreshold</Key>
@@ -172,62 +122,38 @@
     </Rule>
     <Rule>
       <Key>S1656</Key>
-      <type>BUG</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S2156</Key>
-      <type>CODE_SMELL</type>
-      <priority>MINOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S2184</Key>
-      <type>BUG</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S2190</Key>
-      <type>BUG</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S2197</Key>
-      <type>CODE_SMELL</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S2223</Key>
-      <type>CODE_SMELL</type>
-      <priority>INFO</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S2225</Key>
-      <type>BUG</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S2306</Key>
-      <type>CODE_SMELL</type>
-      <priority>MAJOR</priority>
-      <Parameters/>
-    </Rule>
-    <Rule>
-      <Key>S2325</Key>
-      <type>CODE_SMELL</type>
-      <priority>INFO</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S2342</Key>
-      <type>CODE_SMELL</type>
-      <priority>MINOR</priority>
       <Parameters>
         <Parameter>
           <Key>format</Key>
@@ -241,170 +167,114 @@
     </Rule>
     <Rule>
       <Key>S2346</Key>
-      <type>CODE_SMELL</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S2357</Key>
-      <type>CODE_SMELL</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S2372</Key>
-      <type>CODE_SMELL</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S2376</Key>
-      <type>CODE_SMELL</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S2551</Key>
-      <type>BUG</type>
-      <priority>CRITICAL</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S2688</Key>
-      <type>BUG</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S2696</Key>
-      <type>CODE_SMELL</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S2743</Key>
-      <type>CODE_SMELL</type>
-      <priority>MAJOR</priority>
+      <Parameters/>
+    </Rule>
+    <Rule>
+      <Key>S2757</Key>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S2930</Key>
-      <type>BUG</type>
-      <priority>INFO</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S2931</Key>
-      <type>BUG</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S2952</Key>
-      <type>BUG</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S2971</Key>
-      <type>CODE_SMELL</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S3005</Key>
-      <type>BUG</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S3052</Key>
-      <type>CODE_SMELL</type>
-      <priority>MINOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S3234</Key>
-      <type>CODE_SMELL</type>
-      <priority>MINOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S3237</Key>
-      <type>CODE_SMELL</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S3242</Key>
-      <type>CODE_SMELL</type>
-      <priority>MINOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S3247</Key>
-      <type>CODE_SMELL</type>
-      <priority>INFO</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S3256</Key>
-      <type>CODE_SMELL</type>
-      <priority>MINOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S3261</Key>
-      <type>CODE_SMELL</type>
-      <priority>INFO</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S3376</Key>
-      <type>CODE_SMELL</type>
-      <priority>MINOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S3442</Key>
-      <type>CODE_SMELL</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S3443</Key>
-      <type>CODE_SMELL</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S3445</Key>
-      <type>CODE_SMELL</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S3457</Key>
-      <type>CODE_SMELL</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S3459</Key>
-      <type>CODE_SMELL</type>
-      <priority>INFO</priority>
-      <Parameters/>
-    </Rule>
-    <Rule>
-      <Key>S3693</Key>
-      <type>BUG</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S3776</Key>
-      <type>CODE_SMELL</type>
-      <priority>MAJOR</priority>
       <Parameters>
         <Parameter>
           <Key>threshold</Key>
@@ -418,284 +288,190 @@
     </Rule>
     <Rule>
       <Key>S3869</Key>
-      <type>BUG</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S3871</Key>
-      <type>CODE_SMELL</type>
-      <priority>INFO</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S3872</Key>
-      <type>CODE_SMELL</type>
-      <priority>MINOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S3874</Key>
-      <type>CODE_SMELL</type>
-      <priority>CRITICAL</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S3875</Key>
-      <type>CODE_SMELL</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S3876</Key>
-      <type>CODE_SMELL</type>
-      <priority>MINOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S3877</Key>
-      <type>CODE_SMELL</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S3880</Key>
-      <type>CODE_SMELL</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S3881</Key>
-      <type>CODE_SMELL</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S3884</Key>
-      <type>VULNERABILITY</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S3885</Key>
-      <type>CODE_SMELL</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S3887</Key>
-      <type>BUG</type>
-      <priority>MINOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S3889</Key>
-      <type>BUG</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S3903</Key>
-      <type>BUG</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S3906</Key>
-      <type>CODE_SMELL</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S3908</Key>
-      <type>CODE_SMELL</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S3909</Key>
-      <type>CODE_SMELL</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S3925</Key>
-      <type>CODE_SMELL</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S3926</Key>
-      <type>BUG</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S3927</Key>
-      <type>BUG</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S3928</Key>
-      <type>CODE_SMELL</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S3956</Key>
-      <type>CODE_SMELL</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S3962</Key>
-      <type>CODE_SMELL</type>
-      <priority>MINOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S3963</Key>
-      <type>CODE_SMELL</type>
-      <priority>MINOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S3996</Key>
-      <type>CODE_SMELL</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S3997</Key>
-      <type>CODE_SMELL</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S3998</Key>
-      <type>CODE_SMELL</type>
-      <priority>CRITICAL</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S4002</Key>
-      <type>CODE_SMELL</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S4016</Key>
-      <type>CODE_SMELL</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S4017</Key>
-      <type>CODE_SMELL</type>
-      <priority>MINOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S4018</Key>
-      <type>CODE_SMELL</type>
-      <priority>INFO</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S4019</Key>
-      <type>CODE_SMELL</type>
-      <priority>MINOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S4022</Key>
-      <type>CODE_SMELL</type>
-      <priority>INFO</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S4023</Key>
-      <type>CODE_SMELL</type>
-      <priority>INFO</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S4027</Key>
-      <type>CODE_SMELL</type>
-      <priority>MINOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S4039</Key>
-      <type>CODE_SMELL</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S4040</Key>
-      <type>CODE_SMELL</type>
-      <priority>MINOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S4041</Key>
-      <type>CODE_SMELL</type>
-      <priority>MINOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S4047</Key>
-      <type>CODE_SMELL</type>
-      <priority>MINOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S4050</Key>
-      <type>CODE_SMELL</type>
-      <priority>INFO</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S4056</Key>
-      <type>CODE_SMELL</type>
-      <priority>INFO</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S4057</Key>
-      <type>CODE_SMELL</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S4058</Key>
-      <type>CODE_SMELL</type>
-      <priority>MINOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S4059</Key>
-      <type>CODE_SMELL</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S4060</Key>
-      <type>CODE_SMELL</type>
-      <priority>INFO</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S4069</Key>
-      <type>CODE_SMELL</type>
-      <priority>MINOR</priority>
       <Parameters/>
     </Rule>
     <Rule>
       <Key>S4214</Key>
-      <type>CODE_SMELL</type>
-      <priority>MAJOR</priority>
       <Parameters/>
     </Rule>  </Rules>
 </AnalysisInput>
