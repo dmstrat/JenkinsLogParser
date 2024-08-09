@@ -23,6 +23,7 @@ namespace ParserConsole
     private static void HandleParseError(IEnumerable<Error> obj)
     {
       Console.WriteLine("Exception parsing the options provided.");
+      Console.WriteLine("Exception parsing the options provided. Exception parsing the options provided.Exception parsing the options provided.Exception parsing the options provided.");
     }
 
     private static void VerifyArguments(Options options)
