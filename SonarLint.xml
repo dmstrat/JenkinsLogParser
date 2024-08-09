@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<AnalysisInput>
+  <Settings>
+    <Setting>
+      <Key>sonar.cs.ignoreHeaderComments</Key>
+      <Value>true</Value>
+    </Setting>
+  </Settings>
+  <Rules>
+    <Rule>
+      <Key>S103</Key>
+      <priority>MAJOR</priority>
+      <Parameters>
+        <Parameter>
+          <Key>maximumLineLength</Key>
+          <Value>140</Value>
+        </Parameter>
+      </Parameters>
+    </Rule>
+  </Rules>
+</AnalysisInput>
