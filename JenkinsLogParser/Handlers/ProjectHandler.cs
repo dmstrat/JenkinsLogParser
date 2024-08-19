@@ -6,7 +6,7 @@ namespace JenkinsLogParser.Handlers
   public class ProjectHandler : IHandles<ProjectStarted>,
                                 IHandles<ProjectEnded>
   {
-    private ProjectBuildHierarchyReport _ProjectBuildHierarchyReport;
+    private readonly ProjectBuildHierarchyReport _ProjectBuildHierarchyReport;
 
     public ProjectHandler(ref ProjectBuildHierarchyReport projectBuildHierarchyReport)
     {
@@ -15,26 +15,24 @@ namespace JenkinsLogParser.Handlers
 
     public void Handle(ProjectStarted tokenEvent)
     {
-      var report = _ProjectBuildHierarchyReport;
       var reportArgs = new ProjectBuildHierarchyReportArgs
       {
         LineNumber = tokenEvent.LineNumber,
         ProjectName = tokenEvent.ProjectName,
         Action = ProjectAction.Start
       };
-      report.AddDataRow(reportArgs);
+      _ProjectBuildHierarchyReport.AddDataRow(reportArgs);
     }
 
     public void Handle(ProjectEnded tokenEvent)
     {
-      var report = _ProjectBuildHierarchyReport;
       var reportArgs = new ProjectBuildHierarchyReportArgs
       {
         LineNumber = tokenEvent.LineNumber,
         ProjectName = tokenEvent.ProjectName,
         Action = ProjectAction.End
       };
-      report.AddDataRow(reportArgs);
+      _ProjectBuildHierarchyReport.AddDataRow(reportArgs);
     }
   }
 }

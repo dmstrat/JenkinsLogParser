@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 using JenkinsLogParser.Events;
-using JenkinsLogParser.Events.Projects;
+using JenkinsLogParser.Events.DotCover;
 using JenkinsLogParser.Reports;
 
 namespace JenkinsLogParser.Tokens
 {
-  public class JetBrainsDotCoverEndLine : IToken 
+    public class JetBrainsDotCoverEndLine : IToken 
   {
     public Regex RegularExpression { get; set; }
     public Regex ReplaceRegularExpression { get; set; }

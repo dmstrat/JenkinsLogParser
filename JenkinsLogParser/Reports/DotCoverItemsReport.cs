@@ -10,10 +10,12 @@ namespace JenkinsLogParser.Reports
   {
     private TimeSpan MinTimeSpan = TimeSpan.MaxValue;
     private TimeSpan MaxTimeSpan = TimeSpan.MinValue;
+    private TimeSpan TotalTimeSpan = new TimeSpan();
     private int _LineNumberWidth = 6;
     private int _TextPaddingWidth = 50;
     private IList<DotCoverDataRow> ReportDataRows = new List<DotCoverDataRow>();
     private IList<string> ReportRows;
+    private IList<string> ReportFooterRows;
 
     public override string GetReportName()
     {
@@ -22,15 +24,27 @@ namespace JenkinsLogParser.Reports
 
     public override string GetReportRowHeaders()
     {
-      return "[Execute Line Number | Start - End Line Numbers]:[Category]:[Duration]";
+      return "[Execute Line Number | Start - End Line Numbers]:[Project - Category]:[Duration]";
     }
 
     public override IList<string> GetReportRows()
     {
+      InitializeReport();
+      if (ReportDataRows.Any())
+      {
+        BuildPaddingNumbers();
+        BuildReportRows();
+        BuildFooter();
+      }
+
+      var returnRows = ReportRows.Concat(ReportFooterRows).ToList();
+      return returnRows;
+    }
+
+    private void InitializeReport()
+    {
       ReportRows = new List<string>();
-      BuildPaddingNumbers();
-      BuildReportRows();
-      return ReportRows;
+      ReportFooterRows = new List<string>();
     }
 
     internal void AddDataRow(long lineNumber, string fullText, DotCoverAction action, string testCategory)
@@ -78,8 +92,9 @@ namespace JenkinsLogParser.Reports
       BuildMultiLineReport(ReportDataRows);
     }
 
-    private void BuildMultiLineReport(IList<DotCoverDataRow> reportDataRows)
+    private void BuildMultiLineReport(IEnumerable<DotCoverDataRow> reportDataRows)
     {
+      TotalTimeSpan = new TimeSpan();
       //Sort by LineNumber 
       var sortedRows = reportDataRows.OrderBy(x => x.LineNumber).ToList();
 
@@ -87,12 +102,11 @@ namespace JenkinsLogParser.Reports
       if (weDoNotHaveStartEndPairsForEveryStartEnd)
       {
         Trace.WriteLine("missing a triple of dotcover commands - might have failed mid-execution.");
-        //throw new NotImplementedException("Report Has missing start/end pair items for DotCover Report");
       }
 
-      for (int i = 0; i < sortedRows.Count() - 2;)//; i = i + 2)
+      for (int i = 0; i < sortedRows.Count - 2;)
       {
-        var thereAreThreeRecordsLeftToTest = i + 2 < sortedRows.Count();
+        var thereAreThreeRecordsLeftToTest = i + 2 < sortedRows.Count;
         if (thereAreThreeRecordsLeftToTest)
         {
           var haveValidTriplet = sortedRows[i].Action == DotCoverAction.Execute &&
@@ -106,7 +120,7 @@ namespace JenkinsLogParser.Reports
             var end = sortedRows[i + 2];
             var reportRow = BuildReportRow(execution, start, end);
             ReportRows.Add(reportRow);
-            i += 2; //move to next pair 
+            i += 3; //move to next triplet 
           }
           else
           {
@@ -122,16 +136,34 @@ namespace JenkinsLogParser.Reports
         }
       }
 
-      var footerRow = BuildFooter();
-      ReportRows.Add(footerRow);
     }
 
-    private string BuildFooter()
+    private void BuildFooter()
+    {
+      BuildMinMaxReportLine();
+      BuildTotalRuntimeLine();
+      BuildCategoryTotalsLine();
+    }
+
+    private void BuildCategoryTotalsLine()
+    {
+      var totalNumberOfExecutions = ReportRows.Count;
+      var reportLine = $"Total DotCover Executions:{totalNumberOfExecutions}";
+      ReportFooterRows.Add(reportLine);
+    }
+
+    private void BuildTotalRuntimeLine()
+    {
+      var totalTimeSpanFooterRow = $"Total Runtime for DotCover Items: {TotalTimeSpan.ToString()}";
+      ReportFooterRows.Add(totalTimeSpanFooterRow);
+    }
+
+    private void BuildMinMaxReportLine()
     {
       var minReport = $"Min Runtime:{MinTimeSpan.ToString()}";
       var maxReport = $"Max Runtime:{MaxTimeSpan.ToString()}";
-      var returnValue = $"{minReport} - {maxReport}";
-      return returnValue;
+      var footerRow = $"{minReport} - {maxReport}";
+      ReportFooterRows.Add(footerRow);
     }
 
     private string BuildReportRow(in DotCoverDataRow executionRow, in DotCoverDataRow startRow, in DotCoverDataRow endRow)
@@ -152,7 +184,9 @@ namespace JenkinsLogParser.Reports
       var startLineNumber = startRow.LineNumber.ToString().PadLeft(_LineNumberWidth);
       var endLineNumber = endRow.LineNumber.ToString().PadLeft(_LineNumberWidth);
       var testCategory = executionRow.TestCategory.Trim().PadLeft(_TextPaddingWidth);
-      var diff = (endRow.Timestamp - startRow.Timestamp).ToString();
+      var diff = (endRow.Timestamp - startRow.Timestamp);
+      TotalTimeSpan = TotalTimeSpan.Add(diff);
+
 
       var reportLine = $"{executionLineNumber}:{startLineNumber} - {endLineNumber}:{testCategory}:{diff}";
 

@@ -1,4 +1,5 @@
 ﻿using JenkinsLogParser.Events;
+using JenkinsLogParser.Events.DotCover;
 using JenkinsLogParser.Events.Projects;
 using JenkinsLogParser.Handlers;
 using JenkinsLogParser.Reports;
@@ -8,7 +9,7 @@ using System.Linq;
 
 namespace JenkinsLogParser.Helpers
 {
-  internal static class DelegateHelper
+    internal static class DelegateHelper
   {
     public static IList<Delegate> BuildDelegateDictionary(IDictionary<Type, object> reports)
     {
